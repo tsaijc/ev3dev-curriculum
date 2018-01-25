@@ -90,7 +90,7 @@ def main():
         if left_sp == 0:
             break
         right_sp = left_sp
-        time_s = int(input("Distance to Travel (inches): ") / (0.0108 * left_sp))
+        time_s = int(input("Distance to Travel (inches): ")) / (0.0108 * left_sp)
         left_motor.run_forever(speed_sp=left_sp)
         right_motor.run_forever(speed_sp=right_sp)
         time.sleep(time_s)
