@@ -86,14 +86,15 @@ def main():
 
     time_s = 1  # Any value other than 0.
     while time_s != 0:
-        left_sp = int(input("Enter a speed for the left motor (0 to 900 dps): "))
-        right_sp = int(input("Enter a speed for the right motor (0 to 900 dps): "))
-        time_s = int(input("Enter a time to drive (seconds): "))
+        left_sp = int(input("Enter a speed (0 to 900 dps): "))
+        right_sp = left_sp
+        time_s = int(input("Distance to Travel (inches): ") / (0.0108 * left_sp))
         left_motor.run_forever(speed_sp=left_sp)
         right_motor.run_forever(speed_sp=right_sp)
         time.sleep(time_s)
         left_motor.stop()
         right_motor.stop(stop_action="brake")
+
 
     print("Goodbye!")
     ev3.Sound.speak("Goodbye").wait()
@@ -105,14 +106,14 @@ def main():
 main()
 
 
-# TODO: 4. Change the input questions from:
+# DONE: 4. Change the input questions from:
 #   Enter a speed for the left motor (0 to 900 dps):
 #   Enter a speed for the right motor (0 to 900 dps):
 #   Enter a time to drive (seconds):
 # to:
 #   Enter a speed (0 to 900 dps):
 #   Distance to travel (inches):
-# TODO: 5. Write the code necessary to make the robot drive at that speed going roughly that distance.
+# done: 5. Write the code necessary to make the robot drive at that speed going roughly that distance.
 #   Note, in this module, you are REQUIRED to use the pattern...
 #      run_forever()
 #      time.sleep(some_amount)
