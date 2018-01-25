@@ -97,7 +97,6 @@ def main():
         left_motor.stop()
         right_motor.stop(stop_action="brake")
 
-
     print("Goodbye!")
     ev3.Sound.speak("Goodbye").wait()
 
