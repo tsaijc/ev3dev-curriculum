@@ -29,15 +29,15 @@ Authors: David Fisher and Hyang Seo.
 #
 #  Record your calculated speed conversions here:
 #   Tests @ 10 seconds:
-#     100 degrees / second  -->  traveled 14 inches  -->  YYY inches / second
-#     200 degrees / second  -->  traveled 24 inches  -->  YYY inches / second
-#     300 degrees / second  -->  traveled 35 inches  -->  YYY inches / second
-#     400 degrees / second  -->  traveled 45 inches  -->  YYY inches / second
+#     100 degrees / second  -->  traveled 14 inches  -->  1.4 inches / second
+#     200 degrees / second  -->  traveled 24 inches  -->  2.4 inches / second
+#     300 degrees / second  -->  traveled 35 inches  -->  3.5 inches / second
+#     400 degrees / second  -->  traveled 45 inches  -->  4.5 inches / second
 #   Tests @ 5 seconds:
-#     500 degrees / second  -->  traveled 29 inches  -->  YYY inches / second
-#     600 degrees / second  -->  traveled 34 inches  -->  YYY inches / second
-#     700 degrees / second  -->  traveled 40 inches  -->  YYY inches / second
-#     800 degrees / second  -->  traveled 44 inches  -->  YYY inches / second
+#     500 degrees / second  -->  traveled 29 inches  -->  5.8 inches / second
+#     600 degrees / second  -->  traveled 34 inches  -->  6.8 inches / second
+#     700 degrees / second  -->  traveled 40 inches  -->  8.0 inches / second
+#     800 degrees / second  -->  traveled 44 inches  -->  8.9 inches / second
 #     900 degrees / second  -->  traveled 44 inches  -->  YYY inches / second (probably no faster than 800)
 #
 # TODO: 3. Make an equation
