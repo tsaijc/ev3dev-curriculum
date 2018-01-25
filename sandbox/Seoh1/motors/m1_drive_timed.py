@@ -47,7 +47,7 @@ Authors: David Fisher and Hyang Seo.
 #       make the value for m and b perfect, but that is overkill.  You have permission to set b = 0 and just pick an m
 #       that would roughly fit most of your data.  Put your value for m below and think about if it most fits:
 #
-#       speed_in_inches_per_second = m * speed_in_degrees_per_second + 0
+#       speed_in_inches_per_second = 0.0108 * speed_in_degrees_per_second + 0
 #
 #     Eventually your goal is to make an equation that will allow users to input any distance in inches and any speed in
 #     degrees per second, then output the time needed to drive the correct distance at that speed.  So eventually you
