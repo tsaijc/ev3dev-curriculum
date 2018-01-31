@@ -60,20 +60,20 @@ def main():
     # You are not allowed to make any changes to this code.
     # --------------------------------------------------------------
     print("--------------------------------------------")
-    print(" Turn degrees")
+    print("Turn degrees")
     print("--------------------------------------------")
     ev3.Sound.speak("Turn degrees").wait()
     robot = robo.Snatch3r()
 
     while True:
-        speed_deg_per_second = int(input("Speed (0 to 900 dps): "))
-        if speed_deg_per_second == 0:
+        turn_speed_sp = int(input("Speed (0 to 900 dps): "))
+        if turn_speed_sp == 0:
             break
-        inches_target = int(input("Distance (inches): "))
-        if inches_target == 0:
+        degrees_to_turn = int(input("Degrees to Turn: "))
+        if degrees_to_turn == 0:
             break
 
-        robot.drive_inches(inches_target, speed_deg_per_second)
+        robot.drive_inches(degrees_to_turn, turn_speed_sp)
         ev3.Sound.beep().wait()  # Fun little beep
 
     print("Goodbye!")
