@@ -28,6 +28,7 @@ class Snatch3r(object):
         assert left_motor.connected
         assert right_motor.connected
 
+        inches_target = 1  # Any value other than 0.
         left_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
                                       stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         right_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
