@@ -32,7 +32,3 @@ class Snatch3r(object):
                                       stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         right_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
                                        stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-        ev3.Sound.beep().wait()
-
-        print("Goodbye!")
-        ev3.Sound.speak("Goodbye").wait()
