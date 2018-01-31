@@ -19,7 +19,7 @@ import robot_controller as robo
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
 
-    def drive_inches(self):
+    def drive_inches(self, inches_target, speed_deg_per_second):
         # Connect two large motors on output ports B and C
         left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
         right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
