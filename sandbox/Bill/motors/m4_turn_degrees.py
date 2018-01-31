@@ -6,7 +6,7 @@ Much like you have a drive_inches command in your library, you will now make a t
 Authors: David Fisher and zhengshan fang.
 """  # done: 1. PUT YOUR NAME IN THE ABOVE LINE.
 import ev3dev.ev3 as ev3
-import robot_controller as robot
+import robot_controller as robo
 
 # TODO: 2. Copy the contents of m3_drive_inches_via_library.py and paste that text into this file below these comments.
 #   Change the initial print and speak commands to reflect this module, like this...
@@ -15,19 +15,6 @@ print(" Turn degrees")
 print("--------------------------------------------")
 ev3.Sound.speak("Turn degrees").wait()
 #   You will need to modify that code for this problem, but it is a handy starting point.
-while True:
-    speed_deg_per_second = int(input("Speed (0 to 900 dps): "))
-    if speed_deg_per_second == 0:
-        break
-    inches_target = int(input("Distance (inches): "))
-    if inches_target == 0:
-        break
-
-    robot.drive_inches(inches_target, speed_deg_per_second)
-    ev3.Sound.beep().wait()  # Fun little beep
-
-print("Goodbye!")
-ev3.Sound.speak("Goodbye").wait()
 
 # TODO: 3. Create a method in your library called turn_degrees that receives the degrees_to_turn and turn_speed_sp
 #   To help you get started here is a potential method signature line that will be in your library.
