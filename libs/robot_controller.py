@@ -33,15 +33,15 @@ class Snatch3r(object):
         assert left_motor.connected
         assert right_motor.connected
 
-        distance_in = 1  # Any value other than 0.
-        while distance_in != 0:
-            left_sp = int(input("Enter a speed (0 to 900 dps): "))
-            if left_sp == 0:
+        inches_target = 1  # Any value other than 0.
+        while inches_target != 0:
+            speed_deg_per_second = int(input("Enter a speed (0 to 900 dps): "))
+            if speed_deg_per_second == 0:
                 break
-            distance_in = int(input("Distance to Travel (inches): "))
-            left_motor.run_to_rel_pos(position_sp=(90 * distance_in), speed_sp=left_sp,
+            inches_target = int(input("Distance to Travel (inches): "))
+            left_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
                                       stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-            right_motor.run_to_rel_pos(position_sp=(90 * distance_in), speed_sp=left_sp,
+            right_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
                                        stop_action=ev3.Motor.STOP_ACTION_BRAKE)
             ev3.Sound.beep().wait()
 
