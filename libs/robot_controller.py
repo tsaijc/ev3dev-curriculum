@@ -21,21 +21,29 @@ class Snatch3r(object):
 
     def drive_inches(inches_target, speed_deg_per_second):
         print("--------------------------------------------")
-        print(" Drive inches")
+        print("Drive Inches")
         print("--------------------------------------------")
-        ev3.Sound.speak("Drive inches").wait()
-        robot = robo.Snatch3r()
+        ev3.Sound.speak("Drive Inches").wait()
 
-        while True:
-            speed_deg_per_second = int(input("Speed (0 to 900 dps): "))
-            if speed_deg_per_second == 0:
-                break
-            inches_target = int(input("Distance (inches): "))
-            if inches_target == 0:
-                break
+        # Connect two large motors on output ports B and C
+        left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+        right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
 
-            robot.drive_inches(inches_target, speed_deg_per_second)
-            ev3.Sound.beep().wait()  # Fun little beep
+        # Check that the motors are actually connected
+        assert left_motor.connected
+        assert right_motor.connected
+
+        distance_in = 1  # Any value other than 0.
+        while distance_in != 0:
+            left_sp = int(input("Enter a speed (0 to 900 dps): "))
+            if left_sp == 0:
+                break
+            distance_in = int(input("Distance to Travel (inches): "))
+            left_motor.run_to_rel_pos(position_sp=(90 * distance_in), speed_sp=left_sp,
+                                      stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+            right_motor.run_to_rel_pos(position_sp=(90 * distance_in), speed_sp=left_sp,
+                                       stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+            ev3.Sound.beep().wait()
 
         print("Goodbye!")
         ev3.Sound.speak("Goodbye").wait()
