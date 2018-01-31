@@ -19,16 +19,20 @@ import robot_controller as robo
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
 
-    def drive_inches(self, inches_target, speed_deg_per_second):
+    def __init__(self):
         # Connect two large motors on output ports B and C
-        left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
-        right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+        self.left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+        self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
 
         # Check that the motors are actually connected
-        assert left_motor.connected
-        assert right_motor.connected
+        assert self.left_motor.connected
+        assert self.right_motor.connected
 
-        left_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
+
+    def drive_inches(self, inches_target, speed_deg_per_second):
+        self.left_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
                                       stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-        right_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
+        self.right_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
                                        stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
