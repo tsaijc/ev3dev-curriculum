@@ -19,7 +19,7 @@ import robot_controller as robo
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
 
-    def drive_inches(self):
+    def drive_inches(inches_target, speed_deg_per_second):
         print("--------------------------------------------")
         print(" Drive inches")
         print("--------------------------------------------")
