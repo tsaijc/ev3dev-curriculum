@@ -12,9 +12,7 @@
 """
 
 import ev3dev.ev3 as ev3
-import math
-import time
-import robot_controller as robo
+
 
 class Snatch3r(object):
     """Commands for the Snatch3r robot that might be useful in many different programs."""
@@ -28,11 +26,11 @@ class Snatch3r(object):
         assert self.left_motor.connected
         assert self.right_motor.connected
 
-
     def drive_inches(self, inches_target, speed_deg_per_second):
+        """Drives robot forwards or backwards using speed and inches to travel input"""
         self.left_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
-                                      stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-        self.right_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
                                        stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        self.right_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
+                                        stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
