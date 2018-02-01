@@ -103,10 +103,11 @@ def arm_up(arm_motor, touch_sensor):
     # Make a beep sound
 
     # Code that attempts to do this task but has many bugs.  Fix them!
-    arm_motor.run_to_rel_pos(position_sp=14.2, speed_sp=MAX_SPEED)
-    while touch_sensor.is_pressed:
+    arm_motor.run_to_rel_pos(position_sp=14.2*360, speed_sp=MAX_SPEED)
+    while not touch_sensor.is_pressed:
         time.sleep(0.01)
     arm_motor.stop()
+    ev3.Sound.beep().wait()  # Fun little beep
 
 
 def arm_down(arm_motor):
