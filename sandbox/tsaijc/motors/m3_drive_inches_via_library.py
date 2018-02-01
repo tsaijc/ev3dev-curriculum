@@ -58,7 +58,6 @@ def main():
 
         robot.drive_inches(inches_target, speed_deg_per_second)
         ev3.Sound.beep().wait()  # Fun little beep
-
     print("Goodbye!")
     ev3.Sound.speak("Goodbye").wait()
 
