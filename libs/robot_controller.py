@@ -45,8 +45,8 @@ class Snatch3r(object):
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
-    def drive_polygon(self, sides, speed_deg_per_second, edge_length_in):
-        turn_amount = 360 / sides
+    # def drive_polygon(self, sides, speed_deg_per_second, edge_length_in):
+    #     turn_amount = 360 / sides
         for k in range(sides):
             self.drive_inches(edge_length_in, speed_deg_per_second)
             self.turn_degrees(turn_amount, speed_deg_per_second)
