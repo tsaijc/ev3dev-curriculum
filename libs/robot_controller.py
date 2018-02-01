@@ -36,7 +36,6 @@ class Snatch3r(object):
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
     def turn_degrees(self, degrees_to_turn, turn_speed_sp):
-<<<<<<< Updated upstream
 
         self.left_motor.run_to_rel_pos(position_sp=(-degrees_to_turn*4.5), speed_sp=-turn_speed_sp,
                                        stop_action=ev3.Motor.STOP_ACTION_BRAKE)
@@ -46,26 +45,6 @@ class Snatch3r(object):
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
-    # def drive_polygon(self, sides, speed_deg_per_second, edge_length_in):
-    #     turn_amount = 360 / sides
-        for k in range(sides):
-            self.drive_inches(edge_length_in, speed_deg_per_second)
-            self.turn_degrees(turn_amount, speed_deg_per_second)
-=======
         """Turns robot the amount that you want using degrees to turn and turn speed"""
-        # Left turn
-        if degrees_to_turn >= 0:
-            self.left_motor.run_to_rel_pos(position_sp=-degrees_to_turn, speed_sp=-turn_speed_sp,
-                                           stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-            self.right_motor.run_to_rel_pos(position_sp=degrees_to_turn, speed_sp=turn_speed_sp,
-                                            stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-        # Right turn
-        if degrees_to_turn <= 0:
-            self.left_motor.run_to_rel_pos(position_sp=degrees_to_turn, speed_sp=turn_speed_sp,
-                                           stop_action=ev3.Motor.STOP_ACTION_BRAKE)
-            self.right_motor.run_to_rel_pos(position_sp=-degrees_to_turn, speed_sp=-turn_speed_sp,
-                                            stop_action=ev3.Motor.STOP_ACTION_BRAKE) 
+        
 
-        self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
-        self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
->>>>>>> Stashed changes
