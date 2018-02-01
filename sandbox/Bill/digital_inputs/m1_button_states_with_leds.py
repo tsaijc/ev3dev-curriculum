@@ -5,8 +5,8 @@ This module lets you practice using the buttons on the EV3 as states.
 Normally we'll use event callbacks with buttons, but this example uses buttons as states for the purposes of example.
 Much like we did in tsaijc of the motors unit, later we will show you different (better) ways to use buttons.
 
-Authors: David Fisher and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+Authors: David Fisher and zhengshanfang.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 # TODO: 2. Have someone on your team run this program as is on the EV3 and make sure everyone understands the code.
 #   You will exit the program by pressing the back button on the EV3 brick (button just below the screen).
@@ -22,25 +22,25 @@ def main():
     print("--------------------------------------------")
     ev3.Sound.speak("Buttons and L E Dees").wait()
 
-    # Opening LED dance (to show the LED syntax)
-    # Red LEDs
-    ev3.Sound.speak("Red")
-    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
-    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
-    time.sleep(3)
-
-    # Green LEDs
-    ev3.Sound.speak("Green")
-    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
-    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
-    time.sleep(3)
-
-    # Turn LEDs off
-    ev3.Sound.speak("Off")
-    ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
-    ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
-    # ev3.Leds.all_off()  # Could also use this single command if turning both LEDs off.
-    print('Press the Back button on the EV3 to exit this program.')
+    # # Opening LED dance (to show the LED syntax)
+    # # Red LEDs
+    # ev3.Sound.speak("Red")
+    # ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
+    # ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+    # time.sleep(3)
+    #
+    # # Green LEDs
+    # ev3.Sound.speak("Green")
+    # ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+    # ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+    # time.sleep(3)
+    #
+    # # Turn LEDs off
+    # ev3.Sound.speak("Off")
+    # ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+    # ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+    # # ev3.Leds.all_off()  # Could also use this single command if turning both LEDs off.
+    # print('Press the Back button on the EV3 to exit this program.')
 
     # Buttons on EV3 (the real focus of this module)
     btn = ev3.Button()  # Construct the one and only EV3 Button object
@@ -53,7 +53,7 @@ def main():
 
     current_color_index = 0
     while True:
-        # TODO: 3. Implement the left, right, and up buttons as follows:
+        # Done: 3. Implement the left, right, and up buttons as follows:
         #    When the up button is being pressed:
         #      -- print the word "up"
         #      -- turn off all LEDs
@@ -71,6 +71,22 @@ def main():
         #     there just to provide you with code examples for using the LEDs.  It does not need to run anymore.
         #     Just make sure not to comment out too much. ;)
 
+        if btn.left:
+            print("Left")
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+        elif btn.right:
+            print("Right")
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+        elif btn.up:
+            print("Up")
+            ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.BLACK)
+            ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.BLACK)
+        else:
+            print("No button pressed")
+        time.sleep(1.0)
+
         # TODO: 4. Implement the down button to change the color of both LEDs.
         #   The first press to down should make both LEDs GREEN, the next press makes them RED, then AMBER, then off.
         #   If the user presses the down button again, wrap around the list to GREEN and continue as before.
@@ -78,6 +94,14 @@ def main():
         #   Since you are only allowed to use states, not event callbacks, this last request is a pain, but it's doable
         #     with a while loop that blocks code execution until the down instance variable is False.
         #     Use a time.sleep(0.01) inside the while loop to do nothing but wait for the button to be released.
+        if btn. down:
+            while btn. down:
+                time.sleep(0.01)
+            current_color_index += 1
+            if current_color_index > 3:
+                current_color_index = 0
+            ev3.Leds.set_color(ev3.Leds.LEFT, led_colors[current_color_index])
+            ev3.Leds.set_color(ev3.Leds.RIGHT, led_colors[current_color_index])
 
         # TODO: 5. Formally test your work. When you think you have the problem complete run these tests:
         #   Press Left - Green left LED is on (try holding the button down for a few seconds when you to the press)
