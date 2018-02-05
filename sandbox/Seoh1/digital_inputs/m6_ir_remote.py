@@ -88,7 +88,7 @@ def main():
     btn = ev3.Button()
     btn.on_backspace = lambda state: handle_shutdown(state, dc)
 
-    robot.arm_calibration()  # Start with an arm calibration in this program.
+    #robot.arm_calibration()  # Start with an arm calibration in this program.
 
     while dc.running:
         # TODO: 5. Process the RemoteControl objects.
@@ -113,22 +113,33 @@ def main():
 
 def handle_left_motor_forward(button_state):
     if button_state:
-        ev3.Leds.set_color(ev3.Leds.LEFT,ev3.Leds.GREEN)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
         left_motor.run_forever(speed_sp = 600)
         time.sleep(0.01)
+    else:
+        left_motor.stop(stop_action="brake")
+
 def handle_left_motor_backward(button_state):
     if button_state:
-        ev3.Leds.set_color(ev3.Led.LEFT, ev3.Leds.RED)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
         left_motor.run_forever(speed_sp = -600)
         time.sleep(0.01)
+    else:
+        left_motor.stop(stop_action="brake")
+
 def handle_right_motor_forward(button_state):
     if button_state:
-        ev3.Leds.set_color(ev3.Led.RIGHT, ev3.Leds.GREEN)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
         right_motor.run_forever(speed_sp = 600)
+    else:
+        right_motor.stop(stop_action="brake")
+
 def handle_right_motor_backward(button_state):
     if button_state:
-        ev3.Leds.set_color(ev3.Led.RIGHT, ev3.Leds.GREEN)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
         right_motor.run_forever(speed_sp = -600)
+    else:
+        right_motor.stop(stop_action="brake")
 
 # TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.
 #
