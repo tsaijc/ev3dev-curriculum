@@ -56,7 +56,7 @@ class Snatch3r(object):
         self.arm_motor.run_forever(speed_sp=900)
         while not self.touch_sensor:
             time.sleep(0.01)
-        self.arm_motor.stop(stop_action="break")
+        self.arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         ev3.Sound.beep().wait()  # Fun little beep
 
         arm_revolutions_for_full_range = 14.2
@@ -70,7 +70,7 @@ class Snatch3r(object):
         self.arm_motor.run_to_rel_pos(position_sp=14.2 * 360, speed_sp=900)
         while not self.touch_sensor.is_pressed:
             time.sleep(0.01)
-        self.arm_motor.stop(stop_action="brake")
+        self.arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         ev3.Sound.beep().wait()  # Fun little beep
 
     def arm_down(self):

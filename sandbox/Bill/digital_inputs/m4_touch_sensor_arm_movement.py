@@ -17,7 +17,7 @@ MAX_SPEED = 900
 
 def main():
     print("--------------------------------------------")
-    print(" Touch sensor arm movements")
+    print(" Touch sensor arm movements2")
     print("--------------------------------------------")
     ev3.Sound.speak("Touch sensor arm movements").wait()
 
@@ -73,7 +73,7 @@ def arm_calibration(arm_motor, touch_sensor):
     arm_motor.run_forever(speed_sp=900)
     while not touch_sensor.is_pressed:
         time.sleep(0.01)
-    arm_motor.stop(stop_action="break")
+    arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
     ev3.Sound.beep().wait()  # Fun little beep
 
     arm_revolutions_for_full_range = 14.2
@@ -100,10 +100,10 @@ def arm_up(arm_motor, touch_sensor):
     # Make a beep sound
 
     # Code that attempts to do this task but has many bugs.  Fix them!
-    arm_motor.run_to_rel_pos(position_sp=14.2*360, speed_sp=MAX_SPEED)
+    arm_motor.run_forever(speed_sp=MAX_SPEED)
     while not touch_sensor.is_pressed:
         time.sleep(0.01)
-    arm_motor.stop(stop_action="brake")
+    arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
     ev3.Sound.beep().wait()  # Fun little beep
 
 
