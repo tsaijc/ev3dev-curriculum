@@ -33,6 +33,11 @@ import time
 
 import robot_controller as robo
 
+left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
+touch_sensor = ev3.TouchSensor()
+
 # Note that todo2 is farther down in the code.  That method needs to be written before you do todo3.
 # TODO: 3. Have someone on your team run this program on the EV3 and make sure everyone understands the code.
 # Can you see what the robot does and explain what each line of code is doing? Talk as a group to make sure.
@@ -58,6 +63,23 @@ def main():
     robot = robo.Snatch3r()
     dc = DataContainer()
 
+    rc1 = ev3.RemoteControl(channel=1)
+    assert rc1.connected
+    rc1.on_red_up = lambda state: handle_left_motor_forward(state)
+    rc1.on_red_down = lambda state: handle_left_motor_backward(state)
+    rc1.on_blue_up = lambda state: handle_right_motor_forward(state)
+    rc1.on_blue_down = lambda state: handle_right_motor_backward(state)
+
+
+    # Remote control channel 2
+    rc2 = ev3.RemoteControl(channel=2)
+    assert rc2.connected
+    rc2.on_red_up = lambda state: handle_arm_up_button(state, robot)
+    rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
+    rc2.on_blue_up = lambda state: handle_calibrate_button(state, robot)
+
+
+
     # TODO: 4. Add the necessary IR handler callbacks as per the instructions above.
     # Remote control channel 1 is for driving the crawler tracks around (none of these functions exist yet below).
     # Remote control channel 2 is for moving the arm up and down (all of these functions already exist below).
@@ -70,6 +92,8 @@ def main():
 
     while dc.running:
         # TODO: 5. Process the RemoteControl objects.
+        rc1.process()
+        rc2.process()
         btn.process()
         time.sleep(0.01)
 
@@ -86,6 +110,25 @@ def main():
 # Movement event handlers have not been provided.
 # ----------------------------------------------------------------------
 # TODO: 6. Implement the IR handler callbacks handlers.
+
+def handle_left_motor_forward(button_state):
+    if button_state:
+        ev3.Leds.set_color(ev3.Leds.LEFT,ev3.Leds.GREEN)
+        left_motor.run_forever(speed_sp = 600)
+        time.sleep(0.01)
+def handle_left_motor_backward(button_state):
+    if button_state:
+        ev3.Leds.set_color(ev3.Led.LEFT, ev3.Leds.RED)
+        left_motor.run_forever(speed_sp = -600)
+        time.sleep(0.01)
+def handle_right_motor_forward(button_state):
+    if button_state:
+        ev3.Leds.set_color(ev3.Led.RIGHT, ev3.Leds.GREEN)
+        right_motor.run_forever(speed_sp = 600)
+def handle_right_motor_backward(button_state):
+    if button_state:
+        ev3.Leds.set_color(ev3.Led.RIGHT, ev3.Leds.GREEN)
+        right_motor.run_forever(speed_sp = -600)
 
 # TODO: 7. When your program is complete, call over a TA or instructor to sign your checkoff sheet and do a code review.
 #
