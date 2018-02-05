@@ -41,7 +41,7 @@ class Snatch3r(object):
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
     def turn_degrees(self, degrees_to_turn, turn_speed_sp):
-
+        """Turns robot the amount that you want using degrees to turn and turn speed"""
         self.left_motor.run_to_rel_pos(position_sp=(-degrees_to_turn*4.5), speed_sp=-turn_speed_sp,
                                        stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         self.right_motor.run_to_rel_pos(position_sp=(degrees_to_turn*4.5), speed_sp=turn_speed_sp,
@@ -50,9 +50,9 @@ class Snatch3r(object):
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
-        """Turns robot the amount that you want using degrees to turn and turn speed"""
 
     def arm_calibration(self):
+        """calibrates the robot arm by going up and then down and sets the down position as 0."""
         self.arm_motor.run_forever(speed_sp=900)
         while not self.touch_sensor.is_pressed:
             time.sleep(0.01)
@@ -67,6 +67,7 @@ class Snatch3r(object):
         self.arm_motor.position = 0  # Calibrate the down position as 0 (this line is correct as is).
 
     def arm_up(self):
+        """moves the robot arm up."""
         self.arm_motor.run_forever(speed_sp=900)
         while not self.touch_sensor.is_pressed:
             time.sleep(0.01)
@@ -74,6 +75,7 @@ class Snatch3r(object):
         ev3.Sound.beep().wait()  # Fun little beep
 
     def arm_down(self):
+        """moves the robot arm down."""
         self.arm_motor.run_to_abs_pos(position_sp=0)
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)  # Blocks until the motor finishes running
         ev3.Sound.beep().wait()  # Fun little beep
