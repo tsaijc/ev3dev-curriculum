@@ -106,7 +106,7 @@ def main():
     # DONE: 3. Create an instance of your delegate class and an MQTT client, passing in the delegate object.
     # Note: you can determine the variable names that you should use by looking at the errors underlined in later code.
     # Once you have that done connect the mqtt_client to the MQTT broker using the connect_to_pc method.
-    # Note: on EV3 you call connect_to_pc, but in the PC code it will call connect_to_ev3
+    #Note: on EV3 you call connect_to_pc, but in the PC code it will call connect_to_ev3
     my_delegate = MyDelegate()
     mqtt_client = com.MqttClient(my_delegate)
     mqtt_client.connect_to_pc()

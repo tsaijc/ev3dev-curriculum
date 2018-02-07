@@ -15,7 +15,7 @@ In addition to the MQTT goals, this example will show some tkinter tricks:
   -- How to capture mouse clicks and process the X Y locations
   -- How to draw circles onto a Tkinter Canvas.
 
-Authors: David Fisher and Hyang Seo
+Authors: David Fisher and Hyang Seo.
 """  # DONE:  1. PUT YOUR NAME IN THE ABOVE LINE.
 
 
