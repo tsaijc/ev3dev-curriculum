@@ -24,12 +24,14 @@ class Snatch3r(object):
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.touch_sensor = ev3.TouchSensor()
+        self.running = 0
 
         # Check that the motors are actually connected
         assert self.left_motor.connected
         assert self.right_motor.connected
         assert self.arm_motor.connected
         assert self.touch_sensor
+
 
     def drive_inches(self, inches_target, speed_deg_per_second):
         """Drives robot forwards or backwards using speed and inches to travel input"""
@@ -39,6 +41,14 @@ class Snatch3r(object):
                                         stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
+
+    def drive(self, left_speed, right_speed):
+        
+
+
+    def stop(self):
+        self.right_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+        self.left_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
 
     def turn_degrees(self, degrees_to_turn, turn_speed_sp):
         """Turns robot the amount that you want using degrees to turn and turn speed"""
@@ -79,3 +89,15 @@ class Snatch3r(object):
         self.arm_motor.run_to_abs_pos(position_sp=0)
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)  # Blocks until the motor finishes running
         ev3.Sound.beep().wait()  # Fun little beep
+
+
+    def loop_forever(self):
+
+        self.running = True
+        while self.running:
+            time.sleep(0.1)  # Do nothing (except receive MQTT messages) until an MQTT message calls shutdown.
+
+    def shutdown(self):
+        # Modify a variable that will allow the loop_forever method to end. Additionally stop motors and set LEDs green.
+        # The most important part of this method is given here, but you should add a bit more to stop motors, etc.
+        self.running = False

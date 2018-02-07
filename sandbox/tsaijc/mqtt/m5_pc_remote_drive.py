@@ -34,7 +34,7 @@ import mqtt_remote_method_calls as com
 def main():
     # DONE: 2. Setup an mqtt_client.  Notice that since you don't need to receive any messages you do NOT need to have
     # a MyDelegate class.  Simply construct the MqttClient with no parameter in the constructor (easy).
-    mqtt_client = com.MqttClient
+    mqtt_client = com.MqttClient()
     mqtt_client.connect_to_ev3()
 
     root = tkinter.Tk()
@@ -119,22 +119,22 @@ def main():
 # DONE: 4. Implement the functions for the drive button callbacks.
 def move_forward(mqtt_client, left_speed_entry, right_speed_entry):
     print('move forward')
-    mqtt_client.send_message('drive', [int(left_speed_entry.get()), int(right_speed_entry.get())])
+    mqtt_client.send_message('drive_inches', [int(left_speed_entry.get()), int(right_speed_entry.get())])
 
 
 def move_back(mqtt_client, left_speed_entry, right_speed_entry):
     print('move backwards')
-    mqtt_client.send_message('drive', [-int(left_speed_entry.get()), -int(right_speed_entry.get())])
+    mqtt_client.send_message('drive_inches', [-int(left_speed_entry.get()), -int(right_speed_entry.get())])
 
 
 def turn_left(mqtt_client, left_speed_entry, right_speed_entry):
     print('turn left')
-    mqtt_client.send_message('drive', [-int(left_speed_entry.get()), int(right_speed_entry.get())])
+    mqtt_client.send_message('drive_inches', [-int(left_speed_entry.get()), int(right_speed_entry.get())])
 
 
 def turn_right(mqtt_client, left_speed_entry, right_speed_entry):
     print('turn right')
-    mqtt_client.send_message('drive', [int(left_speed_entry.get()), -int(right_speed_entry.get())])
+    mqtt_client.send_message('drive_inches', [int(left_speed_entry.get()), -int(right_speed_entry.get())])
 
 
 def stop(mqtt_client, left_speed_entry, right_speed_entry):
