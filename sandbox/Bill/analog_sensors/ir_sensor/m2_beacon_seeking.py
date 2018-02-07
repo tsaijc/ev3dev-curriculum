@@ -9,7 +9,7 @@ function gets the robot to that location it will stop the robot and return.  Wit
 prompted if they want to find the beacon again (presumably you move it first) or quit.
 
 
-Authors: David Fisher and zhengshan.
+Authors: David Fisher and zhengshanfang.
 """  # done: 1. PUT YOUR NAME IN THE ABOVE LINE.
 import traceback
 
@@ -29,10 +29,11 @@ def main():
     robot = robo.Snatch3r()
     try:
         while True:
-            if seek_beacon(robot):
+            bool = seek_beacon(robot)
 
             # done: 5. Save the result of the seek_beacon function (a bool), then use that value to only say "Found the
             # beacon" if the return value is True.  (i.e. don't say "Found the beacon" if the attempts was cancelled.)
+            if bool:
                 ev3.Sound.speak("Found the beacon")
 
             command = input("Hit enter to seek the beacon again or enter q to quit: ")
@@ -93,9 +94,10 @@ def seek_beacon(robot):
                 # Close enough of a heading to move forward
                 print("On the right heading. Distance: ", current_distance)
                 # You add more!
-                if current_distance > 0:
+                if current_distance > 2:
                     robot.drive(forward_speed, forward_speed)
                 else:
+                    robot.stop()
                     return True
             elif 2 < current_heading < 10:
                 robot.drive(turn_speed, -turn_speed)
