@@ -43,6 +43,7 @@ def main():
             #   self.color_sensor = ev3.ColorSensor()
             #   assert self.color_sensor
             # Then here you can use a command like robot.color_sensor.reflected_light_intensity
+            white_level = robot.color_sensor.reflected_light_intensity()
 
             print("New white level is {}.".format(white_level))
         elif command_to_run == 'b':
