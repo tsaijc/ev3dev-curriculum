@@ -32,7 +32,6 @@ class Snatch3r(object):
         assert self.arm_motor.connected
         assert self.touch_sensor
 
-
     def drive_inches(self, inches_target, speed_deg_per_second):
         """Drives robot forwards or backwards using speed and inches to travel input"""
         self.left_motor.run_to_rel_pos(position_sp=(90 * inches_target), speed_sp=speed_deg_per_second,
@@ -43,9 +42,8 @@ class Snatch3r(object):
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
     def drive(self, left_speed, right_speed):
-        self.left_motor.run_forever(speed_sp = left_speed)
-        self.right_motor.run_forever(speed_sp = right_speed)
-
+        self.left_motor.run_forever(speed_sp=left_speed)
+        self.right_motor.run_forever(speed_sp=right_speed)
 
     def stop(self):
         self.right_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
@@ -60,7 +58,6 @@ class Snatch3r(object):
 
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
-
 
     def arm_calibration(self):
         """calibrates the robot arm by going up and then down and sets the down position as 0."""
@@ -91,9 +88,8 @@ class Snatch3r(object):
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)  # Blocks until the motor finishes running
         ev3.Sound.beep().wait()  # Fun little beep
 
-
     def loop_forever(self):
-
+        """run the robot forever until shutdown is performed"""
         self.running = True
         while self.running:
             time.sleep(0.1)  # Do nothing (except receive MQTT messages) until an MQTT message calls shutdown.
