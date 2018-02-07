@@ -119,25 +119,25 @@ def main():
 # DONE: 4. Implement the functions for the drive button callbacks.
 def move_forward(mqtt_client, left_speed_entry, right_speed_entry):
     print('move forward')
-    mqtt_client.send_message('drive_inches', [int(left_speed_entry.get()), int(right_speed_entry.get())])
+    mqtt_client.send_message('drive', [int(left_speed_entry.get()), int(right_speed_entry.get())])
 
 
 def move_back(mqtt_client, left_speed_entry, right_speed_entry):
     print('move backwards')
-    mqtt_client.send_message('drive_inches', [-int(left_speed_entry.get()), -int(right_speed_entry.get())])
+    mqtt_client.send_message('drive', [-int(left_speed_entry.get()), -int(right_speed_entry.get())])
 
 
 def turn_left(mqtt_client, left_speed_entry, right_speed_entry):
     print('turn left')
-    mqtt_client.send_message('drive_inches', [-int(left_speed_entry.get()), int(right_speed_entry.get())])
+    mqtt_client.send_message('drive', [-int(left_speed_entry.get()), int(right_speed_entry.get())])
 
 
 def turn_right(mqtt_client, left_speed_entry, right_speed_entry):
     print('turn right')
-    mqtt_client.send_message('drive_inches', [int(left_speed_entry.get()), -int(right_speed_entry.get())])
+    mqtt_client.send_message('drive', [int(left_speed_entry.get()), -int(right_speed_entry.get())])
 
 
-def stop(mqtt_client, left_speed_entry, right_speed_entry):
+def stop(mqtt_client):
     print('stop')
     mqtt_client.send_message('stop')
 

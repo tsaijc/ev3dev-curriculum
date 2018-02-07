@@ -43,7 +43,8 @@ class Snatch3r(object):
         self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
     def drive(self, left_speed, right_speed):
-        
+        self.left_motor.run_forever(speed_sp = left_speed)
+        self.right_motor.run_forever(speed_sp = right_speed)
 
 
     def stop(self):
