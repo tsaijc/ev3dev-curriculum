@@ -29,12 +29,11 @@ def main():
     robot = robo.Snatch3r()
     try:
         while True:
-            bool = seek_beacon(robot)
+            seek_beacon(robot)
 
             # done: 5. Save the result of the seek_beacon function (a bool), then use that value to only say "Found the
             # beacon" if the return value is True.  (i.e. don't say "Found the beacon" if the attempts was cancelled.)
-            if bool:
-                ev3.Sound.speak("Found the beacon")
+            ev3.Sound.speak("Found the beacon")
 
             command = input("Hit enter to seek the beacon again or enter q to quit: ")
             if command == "q":
@@ -95,17 +94,21 @@ def seek_beacon(robot):
                 print("On the right heading. Distance: ", current_distance)
                 # You add more!
                 if current_distance > 2:
+                    print("driving to beacon")
                     robot.drive(forward_speed, forward_speed)
-                else:
-                    robot.stop()
-                    return True
-            elif 2 < current_heading < 10:
-                robot.drive(turn_speed, -turn_speed)
-            elif -10 < current_distance < -2:
-                robot.drive(-turn_speed, turn_speed)
+                    if 2 < current_heading < 10:
+                        print("turn right")
+                        robot.drive(turn_speed, -turn_speed)
+                    elif -10 < current_distance < -2:
+                        print("turn left")
+                        robot.drive(-turn_speed, turn_speed)
+                    else:
+                        print('Heading too far off')
+                        robot.stop()
             else:
-                print('Heading too far off')
                 robot.stop()
+                return True
+
 
         time.sleep(0.2)
 
