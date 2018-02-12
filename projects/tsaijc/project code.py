@@ -22,6 +22,13 @@ class MyDelegate(object):
         self.display_label.configure(text=message_to_display)
 
 
+class DataContainer(object):
+    """ Helper class that might be useful to communicate between different callbacks."""
+
+    def __init__(self):
+        self.running = True
+
+
 def main():
     root = tkinter.Tk()
     root.title("MQTT Remote")
@@ -99,6 +106,10 @@ def main():
 
     root.mainloop()
 
+    dc = DataContainer
+    btn = ev3.Button()
+    btn.on_backspace = lambda state: handle_shutdown(state, dc)
+
 
 # Tkinter callbacks
 def move_forward(mqtt_client, left_speed_entry, right_speed_entry):
@@ -126,7 +137,6 @@ def stop(mqtt_client):
     mqtt_client.send_message('stop')
 
 
-# Arm command callbacks
 def send_up(mqtt_client):
     print("arm_up")
     mqtt_client.send_message("arm_up")
@@ -144,6 +154,12 @@ def quit_program(mqtt_client, shutdown_ev3):
         mqtt_client.send_message("shutdown")
     mqtt_client.close()
     exit()
+
+
+def handle_shutdown(button_state, dc):
+    """ Hit back button on EV3 to exit the program."""
+    if button_state:
+        dc.running = False
 
 
 # calls main to run program.
