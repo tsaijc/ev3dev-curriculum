@@ -12,7 +12,7 @@ import mqtt_remote_method_calls as com
 
 
 class MyDelegate(object):
-
+    """ MyDelegate class that sets up display messages between EV3 and the PC."""
     def __init__(self, label_to_display_messages_in):
         self.display_label = label_to_display_messages_in
 
@@ -24,19 +24,29 @@ class MyDelegate(object):
 
 class DataContainer(object):
     """ Helper class that might be useful to communicate between different callbacks."""
-
     def __init__(self):
         self.running = True
 
 
 def main():
+
+    control_ev3_movements()
+
+
+def control_ev3_movements():
+    """
+    Builds TKinter GUI.
+    Sets up buttons on TKinter GUI.
+        Is for driving robot in all directions, sending messages from EV3 to PC and displaying on
+        the GUI.
+    """
     root = tkinter.Tk()
     root.title("MQTT Remote")
 
     main_frame = ttk.Frame(root, padding=20, relief='raised')
     main_frame.grid()
 
-    button_message = ttk.Label(main_frame, text="--")
+    button_message = ttk.Label(main_frame, textvariable=MyDelegate.button_pressed())
     button_message.grid(row=7, column=1)
 
     my_delegate = MyDelegate(button_message)
@@ -57,7 +67,7 @@ def main():
 
     forward_button = ttk.Button(main_frame, text="Forward")
     forward_button.grid(row=2, column=1)
-    # forward_button and '<Up>' key is done for your here...
+    # forward_button and '<Up>' key
     forward_button['command'] = lambda: move_forward(mqtt_client, left_speed_entry, right_speed_entry)
     root.bind('<Up>', lambda event: move_forward(mqtt_client, left_speed_entry, right_speed_entry))
 
@@ -106,6 +116,7 @@ def main():
 
     root.mainloop()
 
+    # code for exiting program when back button on EV3 is pressed.
     dc = DataContainer
     btn = ev3.Button()
     btn.on_backspace = lambda state: handle_shutdown(state, dc)
