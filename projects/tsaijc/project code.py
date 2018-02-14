@@ -46,7 +46,7 @@ def control_ev3_movements():
     main_frame = ttk.Frame(root, padding=20, relief='raised')
     main_frame.grid()
 
-    button_message = ttk.Label(main_frame, textvariable=MyDelegate.button_pressed())
+    button_message = ttk.Label(main_frame, text='--')
     button_message.grid(row=7, column=1)
 
     my_delegate = MyDelegate(button_message)
