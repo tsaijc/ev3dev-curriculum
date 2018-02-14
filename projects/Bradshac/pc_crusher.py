@@ -88,9 +88,14 @@ def main():
     e_button['command'] = (lambda: quit_program(mqtt_client, True))
 
     g_button = ttk.Button(main_frame, text="Grab")
-    g_button.grid(row=6, column=2)
+    g_button.grid(row=7, column=2)
     g_button['command'] = (lambda: grab(mqtt_client))
-    root.bind('<g>', lambda event: send_up(mqtt_client))
+    root.bind('<g>', lambda event: grab(mqtt_client))
+
+    c_button = ttk.Button(main_frame, text="Calibrate")
+    c_button.grid(row=7, column=0)
+    c_button['command'] = (lambda: cali(mqtt_client))
+    root.bind('<c>', lambda event: cali(mqtt_client))
 
     root.mainloop()
 
@@ -143,6 +148,9 @@ def quit_program(mqtt_client, shutdown_ev3):
     mqtt_client.close()
     exit()
 
+def cali(mqtt_client):
+    print("Calibrating")
+    mqtt_client.send_message("arm_calibration")
 
 def grab(mqtt_client):
     print("crush")
