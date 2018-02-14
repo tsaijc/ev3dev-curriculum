@@ -90,6 +90,10 @@ class Snatch3r(object):
         self.arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         ev3.Sound.beep().wait()  # Fun little beep
 
+    def crush(self):
+        self.arm_motor.run_to_rel_pos(position_sp=400)
+        
+
     def arm_down(self):
         """moves the robot arm down."""
         self.arm_motor.run_to_abs_pos(position_sp=0)

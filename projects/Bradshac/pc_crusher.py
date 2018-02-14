@@ -87,6 +87,11 @@ def main():
     e_button.grid(row=6, column=2)
     e_button['command'] = (lambda: quit_program(mqtt_client, True))
 
+    g_button = ttk.Button(main_frame, text="Grab")
+    g_button.grid(row=6, column=2)
+    g_button['command'] = (lambda: grab(mqtt_client))
+    root.bind('<g>', lambda event: send_up(mqtt_client))
+
     root.mainloop()
 
 
@@ -106,19 +111,17 @@ def move_back(mqtt_client, left_speed_entry, right_speed_entry):
 
 def turn_left(mqtt_client, left_speed_entry, right_speed_entry):
     print('turn left')
-    mqtt_client.send_message('drive', [-int(left_speed_entry.get()), int(right_speed_entry.get())])
+    mqtt_client.send_message('drive', [-int(left_speed_entry.get()/6), int(right_speed_entry.get()/6)])
 
 
 def turn_right(mqtt_client, left_speed_entry, right_speed_entry):
     print('turn right')
-    mqtt_client.send_message('drive', [int(left_speed_entry.get()), -int(right_speed_entry.get())])
+    mqtt_client.send_message('drive', [int(left_speed_entry.get()/6), -int(right_speed_entry.get()/6)])
 
 
 def stop(mqtt_client):
     print('stop')
     mqtt_client.send_message('stop')
-
-
 
 
 # Arm command callbacks
@@ -140,5 +143,9 @@ def quit_program(mqtt_client, shutdown_ev3):
     mqtt_client.close()
     exit()
 
+
+def grab(mqtt_client):
+    print("crush")
+    mqtt_client.send_message("crush")
 
 main()
