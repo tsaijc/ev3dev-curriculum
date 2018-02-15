@@ -174,6 +174,7 @@ class Snatch3r(object):
                     # Close enough of a heading to move forward
                     print("On the right heading. Distance: ", current_distance)
                     # You add more!
+                    self.stop()
                     self.read_colors()
                     return
 

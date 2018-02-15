@@ -90,7 +90,7 @@ def main():
 
 def read_colors(mqtt_client):
     print('read colors')
-    mqtt_client.send_message('read_colors')
+    mqtt_client.send_message('find_toy')
 
 
 def move_forward(mqtt_client, left_speed_entry, right_speed_entry):
