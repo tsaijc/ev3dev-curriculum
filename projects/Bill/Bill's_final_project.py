@@ -83,9 +83,17 @@ def main():
     find_the_toy['command'] = lambda: read_colors(mqtt_client)
     root.bind('<f>', lambda event: read_colors(mqtt_client))
 
-
+    shake_hands = ttk.Button(main_frame, text="Shake hands")
+    shake_hands.grid(row=8, column=1)
+    shake_hands['command'] = lambda: call_shake_hands(mqtt_client)
+    root.bind('<s>', lambda event: call_shake_hands(mqtt_client))
 
     root.mainloop()
+
+
+def call_shake_hands(mqtt_client):
+    print('shake hands')
+    mqtt_client.send_message('shake_hands')
 
 
 def read_colors(mqtt_client):
