@@ -90,6 +90,10 @@ class Snatch3r(object):
         self.arm_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
         ev3.Sound.beep().wait()  # Fun little beep
 
+    def crush(self):
+        self.arm_motor.run_to_rel_pos(position_sp=400)
+        self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+
     def arm_down(self):
         """moves the robot arm down."""
         self.arm_motor.run_to_abs_pos(position_sp=0)
@@ -150,3 +154,73 @@ class Snatch3r(object):
         print("Abandon ship!")
         self.stop()
         return False
+
+    def find_toy(self):
+        turn_speed = 200
+        while not self.touch_sensor.is_pressed:
+            current_heading = self.beacon_seeker.heading  # use the beacon_seeker heading
+            current_distance = self.beacon_seeker.distance  # use the beacon_seeker distance
+            if current_distance == -128:
+                # If the IR Remote is not found just sit idle for this program until it is moved.
+                print("Can't find toy")
+                self.stop()
+            else:
+                if math.fabs(current_heading) < 2:
+
+                    print("On the right heading. Distance: ", current_distance)
+                    # You add more!
+                    self.stop()
+                    self.read_colors()
+                    print("Read the color")
+                    return
+
+                if 2 < math.fabs(current_heading) < 50:
+                    print("Adjusting Heading: ", current_heading)
+                    if current_heading > 0:
+                        self.drive(turn_speed, -turn_speed)
+                    if current_heading < 0:
+                        self.drive(-turn_speed, turn_speed)
+
+                if math.fabs(current_heading) > 50:
+                    print("Heading is too far off to fix: ", current_heading)
+                    self.stop()
+
+            time.sleep(0.2)
+
+        self.stop()
+        return False
+
+    def read_colors(self):
+        colors = ["yellow", "blue"]
+        mode = ["SIG1", "SIG2"]
+        color_num = 2
+        n = 0
+        while True:
+
+            if n == color_num:
+                n = 0
+            self.pixy.mode = mode[n]
+            print("(X, Y)=({}, {}) Width={} Height={}".format(
+                self.pixy.value(1), self.pixy.value(2), self.pixy.value(3),
+                self.pixy.value(4)))
+            if self.pixy.value(1) > 150 and self.pixy.value(3) > 10:
+                ev3.Sound.speak("It's in the "+colors[n]+" box").wait()
+                return
+            time.sleep(0.1)
+            n += 1
+
+    def shake_hands(self):
+        while True:
+            print(self.ir_sensor.proximity)
+            if self.ir_sensor.proximity < 10:
+                print("shake hands")
+                self.arm_motor.run_to_abs_pos(position_sp=2200)
+                self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+                self.arm_motor.run_to_abs_pos(position_sp=1200)
+                self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+                self.arm_motor.run_to_abs_pos(position_sp=2200)
+                self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+                self.arm_motor.run_to_abs_pos(position_sp=0)
+                self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+                ev3.Sound.speak("Nice to meet you").wait()
+                return
