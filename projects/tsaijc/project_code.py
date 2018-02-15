@@ -50,7 +50,7 @@ def control_ev3_movements():
     button_message.grid(row=7, column=1)
 
     my_delegate = MyDelegate(button_message)
-    mqtt_client = com.MqttClient(my_delegate)
+    mqtt_client = com.MqttClient()
     mqtt_client.connect_to_ev3()
 
     left_speed_label = ttk.Label(main_frame, text="Left")
