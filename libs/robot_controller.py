@@ -150,3 +150,61 @@ class Snatch3r(object):
         print("Abandon ship!")
         self.stop()
         return False
+
+    def find_toy(self):
+        """
+        Uses the IR Sensor in BeaconSeeker mode to find the beacon.  If the beacon is found this return True.
+        If the beacon is not found and the attempt is cancelled by hitting the touch sensor, return False.
+        """
+        forward_speed = 300
+        turn_speed = 200
+        while not self.touch_sensor.is_pressed:
+            current_heading = self.beacon_seeker.heading  # use the beacon_seeker heading
+            current_distance = self.beacon_seeker.distance  # use the beacon_seeker distance
+            if current_distance == -128:
+                # If the IR Remote is not found just sit idle for this program until it is moved.
+                print("Can't find toy")
+                self.stop()
+            else:
+                if math.fabs(current_heading) < 2:
+                    # Close enough of a heading to move forward
+                    print("On the right heading. Distance: ", current_distance)
+                    # You add more!
+                    self.read_colors()
+                    return
+
+                if 2 < math.fabs(current_heading) < 10:
+                    print("Adjusting Heading: ", current_heading)
+                    if current_heading > 0:
+                        self.drive(turn_speed, -turn_speed)
+                    if current_heading < 0:
+                        self.drive(-turn_speed, turn_speed)
+
+                if math.fabs(current_heading) > 10:
+                    print("Heading is too far off to fix: ", current_heading)
+                    self.stop()
+
+            time.sleep(0.2)
+
+        self.stop()
+        return False
+
+    def read_colors(self):
+        ev3.Sound.speak("The color is").wait()
+        colors = ["yellow", "blue"]
+        mode = ["SIG1", "SIG2"]
+        color_num = 2
+        n = 0
+        while True:
+
+            if n == color_num:
+                n = 0
+            self.pixy.mode = mode[n]
+            print("(X, Y)=({}, {}) Width={} Height={}".format(
+                self.pixy.value(1), self.pixy.value(2), self.pixy.value(3),
+                self.pixy.value(4)))
+            if self.pixy.value(3) > 10:
+                ev3.Sound.speak(colors[n]).wait()
+                return
+            time.sleep(0.1)
+            n += 1
