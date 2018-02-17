@@ -20,7 +20,7 @@ def main():
     enter_emotion_entry.grid(row=5, column=1)
     enter_emotion_button = ttk.Button(main_frame, text='Enter Emotion Color')
     enter_emotion_button.grid(row=6, column=1)
-    enter_emotion_button['command'] = lambda: certain_color(mqtt_client, enter_emotion_entry)
+    enter_emotion_button['command'] = lambda: emotion(mqtt_client, enter_emotion_entry)
 
 
     slider_speed_left_label = ttk.Label(main_frame, text="Left Speed")
@@ -95,10 +95,6 @@ def main():
     root.mainloop()
 
 
-# ----------------------------------------------------------------------
-# Tkinter callbacks
-# ----------------------------------------------------------------------
-# DONE: 4. Implement the functions for the drive button callbacks.
 def move_forward(mqtt_client, left_speed_entry, right_speed_entry):
     print('move forward')
     mqtt_client.send_message('drive', [int(left_speed_entry.get()), int(right_speed_entry.get())])
@@ -150,5 +146,9 @@ def cali(mqtt_client):
 def grab(mqtt_client):
     print("crush")
     mqtt_client.send_message("crush")
+
+
+def emotion(mqtt_client, enter_emotion_entry):
+    mqtt_client.send_message('certain_color', [enter_emotion_entry])
 
 main()
