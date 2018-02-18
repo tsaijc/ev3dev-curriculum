@@ -16,17 +16,11 @@ def main():
     main_frame = ttk.Frame(root, padding=20, relief='raised')
     main_frame.grid()
 
-    # left_speed_label = ttk.Label(main_frame, text="Left")
-    # left_speed_label.grid(row=0, column=0)
-    # left_speed_entry = ttk.Entry(main_frame, width=8)
-    # left_speed_entry.insert(0, "600")
-    # left_speed_entry.grid(row=1, column=0)
-    #
-    # right_speed_label = ttk.Label(main_frame, text="Right")
-    # right_speed_label.grid(row=0, column=2)
-    # right_speed_entry = ttk.Entry(main_frame, width=8, justify=tkinter.RIGHT)
-    # right_speed_entry.insert(0, "600")
-    # right_speed_entry.grid(row=1, column=2)
+    enter_emotion_entry = ttk.Entry(main_frame, width=8)
+    enter_emotion_entry.grid(row=5, column=1)
+    enter_emotion_button = ttk.Button(main_frame, text='Enter Emotion Color')
+    enter_emotion_button.grid(row=6, column=1)
+    enter_emotion_button['command'] = lambda: emotion(mqtt_client, enter_emotion_entry)
 
     slider_speed_left_label = ttk.Label(main_frame, text="Left Speed")
     slider_speed_left_label.grid(row=0, column=0)
@@ -71,7 +65,7 @@ def main():
     up_button = ttk.Button(main_frame, text="Up")
     up_button.grid(row=5, column=0)
     up_button['command'] = lambda: send_up(mqtt_client)
-    root.bind('<u>', lambda event: send_up(mqtt_client))
+    root.bind('<h>', lambda event: send_up(mqtt_client))
 
     down_button = ttk.Button(main_frame, text="Down")
     down_button.grid(row=6, column=0)
@@ -87,10 +81,10 @@ def main():
     e_button.grid(row=6, column=2)
     e_button['command'] = (lambda: quit_program(mqtt_client, True))
 
-    g_button = ttk.Button(main_frame, text="Grab")
-    g_button.grid(row=7, column=2)
-    g_button['command'] = (lambda: grab(mqtt_client))
-    root.bind('<g>', lambda event: grab(mqtt_client))
+    c_button = ttk.Button(main_frame, text="Crush")
+    c_button.grid(row=7, column=2)
+    c_button['command'] = (lambda: grab(mqtt_client))
+    root.bind('<c>', lambda event: grab(mqtt_client))
 
     c_button = ttk.Button(main_frame, text="Calibrate")
     c_button.grid(row=7, column=0)
@@ -100,10 +94,6 @@ def main():
     root.mainloop()
 
 
-# ----------------------------------------------------------------------
-# Tkinter callbacks
-# ----------------------------------------------------------------------
-# DONE: 4. Implement the functions for the drive button callbacks.
 def move_forward(mqtt_client, left_speed_entry, right_speed_entry):
     print('move forward')
     mqtt_client.send_message('drive', [int(left_speed_entry.get()), int(right_speed_entry.get())])
@@ -155,5 +145,11 @@ def cali(mqtt_client):
 def grab(mqtt_client):
     print("crush")
     mqtt_client.send_message("crush")
+
+
+def emotion(mqtt_client, enter_emotion_entry):
+    print('hello')
+    mqtt_client.send_message('certain_color', [enter_emotion_entry.get()])
+
 
 main()

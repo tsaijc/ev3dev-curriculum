@@ -91,8 +91,12 @@ class Snatch3r(object):
         ev3.Sound.beep().wait()  # Fun little beep
 
     def crush(self):
-        self.arm_motor.run_to_rel_pos(position_sp=400)
+        self.arm_motor.run_to_abs_pos(position_sp= 1600)
         self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        # self.arm_motor.r
+        # time.
+        # self.arm_motor.run_to_rel_pos(postition_sp=-9200)
+        # self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
     def arm_down(self):
         """moves the robot arm down."""
@@ -116,6 +120,8 @@ class Snatch3r(object):
         Uses the IR Sensor in BeaconSeeker mode to find the beacon.  If the beacon is found this return True.
         If the beacon is not found and the attempt is cancelled by hitting the touch sensor, return False.
         """
+        self.beacon_seeker = ev3.BeaconSeeker(channel=1)
+
         forward_speed = 300
         turn_speed = 100
         while not self.touch_sensor.is_pressed:
@@ -157,35 +163,35 @@ class Snatch3r(object):
 
     def find_toy(self):
         turn_speed = 200
-        while not self.touch_sensor.is_pressed:
-            current_heading = self.beacon_seeker.heading  # use the beacon_seeker heading
-            current_distance = self.beacon_seeker.distance  # use the beacon_seeker distance
-            if current_distance == -128:
-                # If the IR Remote is not found just sit idle for this program until it is moved.
-                print("Can't find toy")
+        self.beacon_seeker = ev3.BeaconSeeker(channel=1)
+        current_heading = self.beacon_seeker.heading  # use the beacon_seeker heading
+        current_distance = self.beacon_seeker.distance  # use the beacon_seeker distance
+        if current_distance == -128:
+            # If the IR Remote is not found just sit idle for this program until it is moved.
+            print("Can't find toy")
+            self.stop()
+        else:
+            if math.fabs(current_heading) < 2:
+
+                print("On the right heading. Distance: ", current_distance)
+                # You add more!
                 self.stop()
-            else:
-                if math.fabs(current_heading) < 2:
+                self.read_colors()
+                print("Read the color")
+                return
 
-                    print("On the right heading. Distance: ", current_distance)
-                    # You add more!
-                    self.stop()
-                    self.read_colors()
-                    print("Read the color")
-                    return
+            if 2 < math.fabs(current_heading) < 50:
+                print("Adjusting Heading: ", current_heading)
+                if current_heading > 0:
+                    self.drive(turn_speed, -turn_speed)
+                if current_heading < 0:
+                    self.drive(-turn_speed, turn_speed)
 
-                if 2 < math.fabs(current_heading) < 50:
-                    print("Adjusting Heading: ", current_heading)
-                    if current_heading > 0:
-                        self.drive(turn_speed, -turn_speed)
-                    if current_heading < 0:
-                        self.drive(-turn_speed, turn_speed)
+            if math.fabs(current_heading) > 50:
+                print("Heading is too far off to fix: ", current_heading)
+                self.stop()
 
-                if math.fabs(current_heading) > 50:
-                    print("Heading is too far off to fix: ", current_heading)
-                    self.stop()
-
-            time.sleep(0.2)
+        time.sleep(0.2)
 
         self.stop()
         return False

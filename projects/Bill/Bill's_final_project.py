@@ -76,17 +76,36 @@ def main():
     e_button['command'] = (lambda: quit_program(mqtt_client, True))
 
     interaction = ttk.Label(main_frame, text="Interaction Section")
-    interaction.grid(row=7, column=0)
+    interaction.grid(row=0, column=4)
+
+    name = ttk.Label(main_frame, text="Pet's name:")
+    name.grid(row=1, column=4)
+    name1 = ttk.Label(main_frame, text="Little Billy")
+    name1.grid(row=1, column=5)
+
+    level = ttk.Label(main_frame, text="Level:")
+    level.grid(row=2, column=4)
+    level = ttk.Label(main_frame, text="29")
+    level.grid(row=2, column=5)
+
+    gender = ttk.Label(main_frame, text="Gender:")
+    gender.grid(row=3, column=4)
+    gender1 = ttk.Label(main_frame, text="Male")
+    gender1.grid(row=3, column=5)
+
+    actions = ttk.Label(main_frame, text="Actions:")
+    actions.grid(row=4, column=4)
 
     find_the_toy = ttk.Button(main_frame, text="Find the toy")
-    find_the_toy.grid(row=8, column=0)
+    find_the_toy.grid(row=5, column=4)
     find_the_toy['command'] = lambda: read_colors(mqtt_client)
     root.bind('<f>', lambda event: read_colors(mqtt_client))
 
     shake_hands = ttk.Button(main_frame, text="Shake hands")
-    shake_hands.grid(row=8, column=1)
+    shake_hands.grid(row=5, column=5)
     shake_hands['command'] = lambda: call_shake_hands(mqtt_client)
     root.bind('<s>', lambda event: call_shake_hands(mqtt_client))
+
 
     root.mainloop()
 
