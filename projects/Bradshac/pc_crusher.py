@@ -22,7 +22,6 @@ def main():
     enter_emotion_button.grid(row=6, column=1)
     enter_emotion_button['command'] = lambda: emotion(mqtt_client, enter_emotion_entry)
 
-
     slider_speed_left_label = ttk.Label(main_frame, text="Left Speed")
     slider_speed_left_label.grid(row=0, column=0)
     slider_speed_left= tkinter.Scale(main_frame, from_=0, to_=600, orient=tkinter.HORIZONTAL)
@@ -149,6 +148,7 @@ def grab(mqtt_client):
 
 
 def emotion(mqtt_client, enter_emotion_entry):
-    mqtt_client.send_message('certain_color', [enter_emotion_entry])
+    print('hello')
+    mqtt_client.send_message('certain_color', [enter_emotion_entry.get()])
 
 main()
