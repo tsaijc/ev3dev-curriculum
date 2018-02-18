@@ -26,7 +26,6 @@ class MyDelegate(object):
                     time.sleep(1.5)
                 time.sleep(0.1)
         if color == 'blue':
-
             if self.robot.color_sensor == ev3.ColorSensor.COLOR_BLUE:
                 if self.robot.ir_sensor.proximity < 10:
                     ev3.Sound.beep()
