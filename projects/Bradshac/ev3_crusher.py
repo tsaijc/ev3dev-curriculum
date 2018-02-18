@@ -34,6 +34,27 @@ class MyDelegate(object):
                     self.robot.arm_down()
                     time.sleep(0.1)
 
+    def arm_up(self):
+        self.robot.arm_up()
+
+    def arm_down(self):
+        self.robot.arm_down()
+
+    def drive(self, left_speed, right_speed):
+        self.robot.drive(left_speed, right_speed)
+
+    def stop(self):
+        self.robot.stop()
+
+    def arm_calibration(self):
+        self.robot.arm_calibration()
+
+    def crush(self):
+        self.robot.crush()
+
+    def shutdown(self):
+        self.robot.shutdown()
+
 
 def main():
     my_delegate = MyDelegate()

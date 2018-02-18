@@ -65,7 +65,7 @@ def main():
     up_button = ttk.Button(main_frame, text="Up")
     up_button.grid(row=5, column=0)
     up_button['command'] = lambda: send_up(mqtt_client)
-    root.bind('<u>', lambda event: send_up(mqtt_client))
+    root.bind('<h>', lambda event: send_up(mqtt_client))
 
     down_button = ttk.Button(main_frame, text="Down")
     down_button.grid(row=6, column=0)
@@ -81,10 +81,10 @@ def main():
     e_button.grid(row=6, column=2)
     e_button['command'] = (lambda: quit_program(mqtt_client, True))
 
-    g_button = ttk.Button(main_frame, text="Crush")
-    g_button.grid(row=7, column=2)
-    g_button['command'] = (lambda: grab(mqtt_client))
-    root.bind('<g>', lambda event: grab(mqtt_client))
+    c_button = ttk.Button(main_frame, text="Crush")
+    c_button.grid(row=7, column=2)
+    c_button['command'] = (lambda: grab(mqtt_client))
+    root.bind('<c>', lambda event: grab(mqtt_client))
 
     c_button = ttk.Button(main_frame, text="Calibrate")
     c_button.grid(row=7, column=0)
