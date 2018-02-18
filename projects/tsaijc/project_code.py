@@ -29,9 +29,7 @@ class DataContainer(object):
 
 
 def main():
-    robot = robo.Snatch3r()
-    btn = ev3.Button()
-    btn.on_up = lambda state: drive_to_color(state, robot, ev3.ColorSensor.COLOR_RED)
+
     control_ev3_movements()
 
 
