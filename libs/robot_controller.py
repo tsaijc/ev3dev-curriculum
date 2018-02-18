@@ -245,3 +245,34 @@ class Snatch3r(object):
                     self.left_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
                     break
             ev3.Sound.speak("Found Red").wait()
+
+    def find_prize(self):
+        turn_speed = 150
+        self.beacon_seeker = ev3.BeaconSeeker(channel=1)
+        while not self.touch_sensor.is_pressed:
+            current_heading = self.beacon_seeker.heading  # use the beacon_seeker heading
+            current_distance = self.beacon_seeker.distance  # use the beacon_seeker distance
+            if current_distance == -128:
+                # If the IR Remote is not found just sit idle for this program until it is moved.
+                print("Cannot locate prize")
+                self.stop()
+            else:
+                if math.fabs(current_heading) < 2:
+                    print("On the right heading. Distance: ", current_distance)
+                    if current_distance > 1:
+                        self.drive(200,200)
+                    else:
+                        self.stop()
+                        return True
+                if 2 < math.fabs(current_heading) < 10:
+                    print("Adjusting Heading: ", current_heading)
+                    if current_heading > 0:
+                        self.drive(turn_speed, -turn_speed)
+                    if current_heading < 0:
+                        self.drive(-turn_speed, turn_speed)
+                if math.fabs(current_heading) > 10:
+                    print("Heading is too far off to fix: ", current_heading)
+                    self.stop()
+            time.sleep(0.2)
+            self.stop()
+            return False

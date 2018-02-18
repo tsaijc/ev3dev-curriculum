@@ -105,8 +105,11 @@ def control_ev3_movements():
     down_button['command'] = lambda: send_down(mqtt_client)
     root.bind('<j>', lambda event: send_down(mqtt_client))
 
-    move_button = ttk.Button(main_frame, text="Move Through Maze")
-    move_button.grid(row=7, column=1)
+    tools = ttk.Label(main_frame, text="Tools To Use:")
+    tools.grid(row=7, column=1)
+
+    move_button = ttk.Button(main_frame, text="Navigate Maze")
+    move_button.grid(row=8, column=0)
     move_button['command'] = lambda: drive_to_color(mqtt_client)
     root.bind('<f>', lambda event: drive_to_color(mqtt_client))
 
@@ -114,6 +117,11 @@ def control_ev3_movements():
     color_button.grid(row=8, column=1)
     color_button['command'] = lambda: color_value(mqtt_client)
     root.bind('<f>', lambda event: color_value(mqtt_client))
+
+    beacon_find = ttk.Button(main_frame, text="Find Prize")
+    beacon_find.grid(row=8, column=2)
+    beacon_find['command'] = lambda: find_prize(mqtt_client)
+    root.bind('<f>', lambda event: find_prize(mqtt_client))
 
     # Buttons for quit and exit
     q_button = ttk.Button(main_frame, text="Quit")
