@@ -224,3 +224,16 @@ class Snatch3r(object):
                 self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
                 ev3.Sound.speak("Nice to meet you").wait()
                 return
+
+    def color_value(self):
+        white_level = self.color_sensor.color
+        print("Color found is {}.".format(white_level))
+
+    def drive_to_color(self):
+            ev3.Sound.speak("Seeking Red").wait()
+            self.drive(200, 200)
+            while True:
+                if self.color_sensor.color == ev3.ColorSensor.COLOR_RED:
+                    self.stop()
+                    break
+            ev3.Sound.speak("Found Red").wait()

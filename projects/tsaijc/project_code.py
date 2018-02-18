@@ -29,7 +29,9 @@ class DataContainer(object):
 
 
 def main():
-
+    robot = robo.Snatch3r()
+    btn = ev3.Button()
+    btn.on_up = lambda state: drive_to_color(state, robot, ev3.ColorSensor.COLOR_RED)
     control_ev3_movements()
 
 
@@ -104,6 +106,16 @@ def control_ev3_movements():
     down_button.grid(row=6, column=0)
     down_button['command'] = lambda: send_down(mqtt_client)
     root.bind('<j>', lambda event: send_down(mqtt_client))
+
+    move_button = ttk.Button(main_frame, text="Move Through Maze")
+    move_button.grid(row=7, column=1)
+    move_button['command'] = lambda: drive_to_color(mqtt_client)
+    root.bind('<f>', lambda event: drive_to_color(mqtt_client))
+
+    color_button = ttk.Button(main_frame, text="Detect Color")
+    color_button.grid(row=8, column=1)
+    color_button['command'] = lambda: color_value(mqtt_client)
+    root.bind('<f>', lambda event: color_value(mqtt_client))
 
     # Buttons for quit and exit
     q_button = ttk.Button(main_frame, text="Quit")
