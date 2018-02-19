@@ -165,6 +165,7 @@ class Snatch3r(object):
                         self.drive_inches(3, forward_speed)
                         self.stop()
                         print("Found the beacon!")
+                        ev3.Sound.speak("I found the beacon")
                         return True
                     print("On the right heading. Distance: ", current_distance)
                     if current_distance > 1:
@@ -189,37 +190,3 @@ class Snatch3r(object):
         self.stop()
         return False
 
-    def find_beacon(self):
-        while True:
-            found_beacon = self.seek_beacon()
-            if found_beacon:
-                self.arm_up()
-                time.sleep(3)
-                self.arm_down()
-            command = input("Hit enter to seek the beacon again or enter q to quit: ")
-            if command == "q":
-                break
-
-def follow_the_line(robot, white_level, black_level):
-    """
-    The robot follows the black line until the touch sensor is pressed.
-    You will need a black line track to test your code
-    When the touch sensor is pressed, line following ends, the robot stops, and control is returned to main.
-
-    Type hints:
-      :type robot: robo.Snatch3r
-      :type white_level: int
-      :type black_level: int
-    """
-
-    # DONE: 5. Use the calibrated values for white and black to calculate a light threshold to determine if your robot
-    # should drive straight or turn to the right.  You will need to test and refine your code until it works well.
-    # Optional extra - For a harder challenge could you drive on the black line and handle left or right turns?
-    while True:
-        if (black_level - 5) <= robot.color_sensor.reflected_light_intensity <= (black_level + 5):
-            robot.drive(300,300)
-        if (white_level - 5) <= robot.color_sensor.reflected_light_intensity <= (white_level + 5):
-            robot.drive(400,-400)
-        if robot.touch_sensor.is_pressed:
-            robot.stop()
-            break

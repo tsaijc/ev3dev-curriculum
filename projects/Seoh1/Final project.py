@@ -12,7 +12,7 @@
     The robot will shutdown when the back button is pressed, or the robot will shutdow
     """
 
-
+import ev3dev.ev3 as ev3
 import datetime
 from datetime import datetime
 import threading
@@ -24,11 +24,13 @@ import tkinter
 from tkinter import ttk
 import mqtt_remote_method_calls as com
 import traceback
-x = datetime.today()
-y = x.replace(day=x.day, hour=1, minute=41, second=0, microsecond=0)
+
+x=datetime.today()
+y = x.replace(day=x.day, hour=2, minute=32, second=0, microsecond=0)
 delta_t = y-x
 
 secs = delta_t.seconds+1
+
 
 def main():
 
@@ -113,8 +115,8 @@ def manual_command_screen():
 
     shake_hands = ttk.Button(main_frame, text="Search for Deliverable")
     shake_hands.grid(row=3, column=5)
-    shake_hands['command'] = lambda: beacon_pickup(mqtt_client)
-    root.bind('<s>', lambda event: beacon_pickup(mqtt_client))
+    shake_hands['command'] = lambda: beacon_searching(mqtt_client)
+    root.bind('<s>', lambda event: beacon_searching(mqtt_client))
 
 
     root.mainloop()
@@ -169,9 +171,9 @@ def handle_shutdown(button_state, dc):
     if button_state:
         dc.running = False
 
-def beacon_pickup(mqtt_client):
-    print("beacon pickup")
-    mqtt_client.send_message("find_beacon")
+def beacon_searching(mqtt_client):
+    print("find beacon")
+    mqtt_client.send_message("seek_beacon")
 
 
 t = Timer(secs, main)
