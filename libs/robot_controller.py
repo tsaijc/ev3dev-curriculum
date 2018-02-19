@@ -246,7 +246,7 @@ class Snatch3r(object):
                     break
             ev3.Sound.speak("Found Red").wait()
 
-    def find_prize(self):
+    def seek_beacon(self):
         turn_speed = 150
         self.beacon_seeker = ev3.BeaconSeeker(channel=1)
         while not self.touch_sensor.is_pressed:
@@ -260,7 +260,7 @@ class Snatch3r(object):
                 if math.fabs(current_heading) < 2:
                     print("On the right heading. Distance: ", current_distance)
                     if current_distance > 1:
-                        self.drive(200,200)
+                        self.drive(200, 200)
                     else:
                         self.stop()
                         return True
@@ -276,3 +276,13 @@ class Snatch3r(object):
             time.sleep(0.2)
             self.stop()
             return False
+
+    def find_prize(self):
+        ev3.Sound.speak("Beacon pickup").wait()
+        while True:
+            found_beacon = self.seek_beacon()
+            if found_beacon:
+                ev3.Sound.speak("I got the beacon")
+                self.arm_up()
+                time.sleep(1)
+                self.arm_down()
