@@ -25,6 +25,7 @@ import mqtt_remote_method_calls as com
 
 # DONE: 2. Create a class. Feel free to call it MyDelegate.
 # Within that class you don't even need an __init__ constructor (an empty constructor comes for free)
+
 class MyDelegate(object):
     def guess_response(self, message_from_ev3):
         print(message_from_ev3)
