@@ -139,8 +139,8 @@ def control_ev3_movements():
 
     color_button = ttk.Button(main_frame, text="Detect Color")
     color_button.grid(row=16, column=1)
-    color_button['command'] = lambda: color_value(mqtt_client)
-    root.bind('<s>', lambda event: color_value(mqtt_client))
+    color_button['command'] = lambda: pick_up_prize(mqtt_client)
+    root.bind('<s>', lambda event: pick_up_prize(mqtt_client))
 
     beacon_find = ttk.Button(main_frame, text="Find Prize")
     beacon_find.grid(row=16, column=2)
@@ -210,9 +210,9 @@ def drive_to_color(mqtt_client):
     mqtt_client.send_message("drive_to_color")
 
 
-def color_value(mqtt_client):
-    print("color_value")
-    mqtt_client.send_message("color_value")
+def pick_up_prize(mqtt_client):
+    print("pick_up_prize")
+    mqtt_client.send_message("pick_up_prize")
 
 
 def find_prize(mqtt_client):
