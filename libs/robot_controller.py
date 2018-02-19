@@ -231,12 +231,8 @@ class Snatch3r(object):
                 ev3.Sound.speak("Nice to meet you").wait()
                 return
 
-    def color_value(self):
-        white_level = self.color_sensor.color
-        ev3.Sound.speak("Found", white_level).wait()
-
     def drive_to_color(self):
-            ev3.Sound.speak("Seeking Red").wait()
+            ev3.Sound.speak("Move Through Maze and Stop At Red").wait()
             self.left_motor.run_forever(speed_sp=200)
             self.right_motor.run_forever(speed_sp=200)
             while True:
@@ -247,20 +243,20 @@ class Snatch3r(object):
             ev3.Sound.speak("Found Red").wait()
 
     def find_prize(self):
-        turn_speed = 150
-        self.beacon_seeker = ev3.BeaconSeeker(channel=1)
+        beacon_seeker = ev3.BeaconSeeker(channel=1)
+        forward_speed = 300
+        turn_speed = 100
         while not self.touch_sensor.is_pressed:
-            current_heading = self.beacon_seeker.heading  # use the beacon_seeker heading
-            current_distance = self.beacon_seeker.distance  # use the beacon_seeker distance
+            current_heading = beacon_seeker.heading  # use the beacon_seeker heading
+            current_distance = beacon_seeker.distance  # use the beacon_seeker distance
             if current_distance == -128:
-                # If the IR Remote is not found just sit idle for this program until it is moved.
-                print("Cannot locate prize")
+                print("IR Remote not found. Distance is -128")
                 self.stop()
             else:
                 if math.fabs(current_heading) < 2:
                     print("On the right heading. Distance: ", current_distance)
                     if current_distance > 1:
-                        self.drive(200, 200)
+                        self.drive(forward_speed, forward_speed)
                     else:
                         self.stop()
                         return True
@@ -274,13 +270,13 @@ class Snatch3r(object):
                     print("Heading is too far off to fix: ", current_heading)
                     self.stop()
             time.sleep(0.2)
-            self.stop()
-            return False
+        self.stop()
+        ev3.Sound.speak("Found Prize").wait()
+        return False
 
     def pick_up_prize(self):
-        ev3.Sound.speak("Beacon pickup").wait()
+        ev3.Sound.speak("Picking Up Prize").wait()
         self.drive_inches(3,100)
-        ev3.Sound.speak("I got the beacon")
+        ev3.Sound.speak("Prize Retrieved")
         self.arm_up()
         time.sleep(1)
-        self.arm_down()
