@@ -233,7 +233,7 @@ class Snatch3r(object):
 
     def color_value(self):
         white_level = self.color_sensor.color
-        print("Color found is {}.".format(white_level))
+        ev3.Sound.speak("Found", white_level).wait()
 
     def drive_to_color(self):
             ev3.Sound.speak("Seeking Red").wait()
