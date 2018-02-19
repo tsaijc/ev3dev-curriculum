@@ -230,3 +230,59 @@ class Snatch3r(object):
                 self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
                 ev3.Sound.speak("Nice to meet you").wait()
                 return
+
+    def color_value(self):
+        white_level = self.color_sensor.color
+        print("Color found is {}.".format(white_level))
+
+    def drive_to_color(self):
+            ev3.Sound.speak("Seeking Red").wait()
+            self.left_motor.run_forever(speed_sp=200)
+            self.right_motor.run_forever(speed_sp=200)
+            while True:
+                if self.color_sensor.color == ev3.ColorSensor.COLOR_RED:
+                    self.right_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+                    self.left_motor.stop(stop_action=ev3.Motor.STOP_ACTION_BRAKE)
+                    break
+            ev3.Sound.speak("Found Red").wait()
+
+    def seek_beacon(self):
+        turn_speed = 150
+        self.beacon_seeker = ev3.BeaconSeeker(channel=1)
+        while not self.touch_sensor.is_pressed:
+            current_heading = self.beacon_seeker.heading  # use the beacon_seeker heading
+            current_distance = self.beacon_seeker.distance  # use the beacon_seeker distance
+            if current_distance == -128:
+                # If the IR Remote is not found just sit idle for this program until it is moved.
+                print("Cannot locate prize")
+                self.stop()
+            else:
+                if math.fabs(current_heading) < 2:
+                    print("On the right heading. Distance: ", current_distance)
+                    if current_distance > 1:
+                        self.drive(200, 200)
+                    else:
+                        self.stop()
+                        return True
+                if 2 < math.fabs(current_heading) < 10:
+                    print("Adjusting Heading: ", current_heading)
+                    if current_heading > 0:
+                        self.drive(turn_speed, -turn_speed)
+                    if current_heading < 0:
+                        self.drive(-turn_speed, turn_speed)
+                if math.fabs(current_heading) > 10:
+                    print("Heading is too far off to fix: ", current_heading)
+                    self.stop()
+            time.sleep(0.2)
+            self.stop()
+            return False
+
+    def find_prize(self):
+        ev3.Sound.speak("Beacon pickup").wait()
+        while True:
+            found_beacon = self.seek_beacon()
+            if found_beacon:
+                ev3.Sound.speak("I got the beacon")
+                self.arm_up()
+                time.sleep(1)
+                self.arm_down()
