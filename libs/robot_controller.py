@@ -25,7 +25,7 @@ class Snatch3r(object):
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.touch_sensor = ev3.TouchSensor()
-        self.running = 0
+        self.running = True
         self.ir_sensor = ev3.InfraredSensor()
         self.color_sensor = ev3.ColorSensor()
         self.pixy = ev3.Sensor(driver_name="pixy-lego")
@@ -165,41 +165,42 @@ class Snatch3r(object):
 
     def find_toy(self):
         turn_speed = 200
-        self.beacon_seeker = ev3.BeaconSeeker(channel=1)
-        current_heading = self.beacon_seeker.heading  # use the beacon_seeker heading
-        current_distance = self.beacon_seeker.distance  # use the beacon_seeker distance
-        if current_distance == -128:
-            # If the IR Remote is not found just sit idle for this program until it is moved.
-            print("Can't find toy")
-            self.stop()
-        else:
-            if math.fabs(current_heading) < 2:
-
-                print("On the right heading. Distance: ", current_distance)
-                # You add more!
+        while True:
+            self.beacon_seeker = ev3.BeaconSeeker(channel=1)
+            current_heading = self.beacon_seeker.heading  # use the beacon_seeker heading
+            current_distance = self.beacon_seeker.distance  # use the beacon_seeker distance
+            if current_distance == -128:
+                # If the IR Remote is not found just sit idle for this program until it is moved.
+                print("Can't find toy")
                 self.stop()
-                self.read_colors()
-                print("Read the color")
-                return
+            else:
+                if math.fabs(current_heading) < 2:
 
-            if 2 < math.fabs(current_heading) < 50:
-                print("Adjusting Heading: ", current_heading)
-                if current_heading > 0:
-                    self.drive(turn_speed, -turn_speed)
-                if current_heading < 0:
-                    self.drive(-turn_speed, turn_speed)
+                    print("On the right heading. Distance: ", current_distance)
+                    # You add more!
+                    self.stop()
+                    self.read_colors()
+                    print("Read the color")
+                    return
 
-            if math.fabs(current_heading) > 50:
-                print("Heading is too far off to fix: ", current_heading)
-                self.stop()
+                if 2 < math.fabs(current_heading) < 50:
+                    print("Adjusting Heading: ", current_heading)
+                    if current_heading > 0:
+                        self.drive(turn_speed, -turn_speed)
+                    if current_heading < 0:
+                        self.drive(-turn_speed, turn_speed)
 
-        time.sleep(0.2)
+                if math.fabs(current_heading) > 50:
+                    print("Heading is too far off to fix: ", current_heading)
+                    self.stop()
+
+            time.sleep(0.2)
 
         self.stop()
         return False
 
     def read_colors(self):
-        colors = ["yellow", "blue"]
+        colors = ["red box", "blue bag"]
         mode = ["SIG1", "SIG2"]
         color_num = 2
         n = 0
@@ -211,8 +212,8 @@ class Snatch3r(object):
             print("(X, Y)=({}, {}) Width={} Height={}".format(
                 self.pixy.value(1), self.pixy.value(2), self.pixy.value(3),
                 self.pixy.value(4)))
-            if self.pixy.value(1) > 150 and self.pixy.value(3) > 10:
-                ev3.Sound.speak("It's in the "+colors[n]+" box").wait()
+            if self.pixy.value(1) > 150 and self.pixy.value(3) > 20:
+                ev3.Sound.speak("It's on the "+colors[n]).wait()
                 return
             time.sleep(0.1)
             n += 1
