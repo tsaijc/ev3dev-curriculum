@@ -23,15 +23,15 @@ import tkinter
 from tkinter import ttk
 import mqtt_remote_method_calls as com
 import traceback
-x = datetime.today()
+"""x = datetime.today()
 y = x.replace(day=x.day, hour=17, minute=1, second=0, microsecond=0)
 delta_t = y-x
 
-secs = delta_t.seconds+1
+secs = delta_t.seconds+1"""
 
 def main():
+
     manual_command_screen()
-    beacon_pickup()
 
 
 def manual_command_screen():
@@ -175,20 +175,13 @@ def handle_shutdown(button_state, dc):
 
 def beacon_pickup():
     robot = robo.Snatch3r()
-    try:
-        while True:
-            found_beacon = robot.seek_beacon()
-            if found_beacon:
-                ev3.Sound.speak("I got the beacon")
-                robot.arm_up()
-                time.sleep(1)
-                robot.arm_down()
-            command = input("Hit enter to seek the beacon again or enter q to quit: ")
-            if command == "q":
-                break
-    except:
-        traceback.print_exc()
-        ev3.Sound.speak("Error")
 
-t = Timer(secs, main)
-t.start()
+    while True:
+        found_beacon = robot.seek_beacon()
+        if found_beacon:
+            ev3.Sound.speak("I got the beacon")
+            robot.arm_up()
+
+
+
+main()
