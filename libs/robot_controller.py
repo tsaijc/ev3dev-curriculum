@@ -30,6 +30,7 @@ class Snatch3r(object):
         self.color_sensor = ev3.ColorSensor()
         self.pixy = ev3.Sensor(driver_name="pixy-lego")
         self.beacon_seeker = ev3.BeaconSeeker(channel=1)
+        self.btn = ev3.Button()
 
         # Check that the motors are actually connected
         assert self.left_motor.connected
@@ -108,6 +109,7 @@ class Snatch3r(object):
         """run the robot forever until shutdown is performed"""
         self.running = True
         while self.running:
+            self.btn.process()
             time.sleep(0.1)  # Do nothing (except receive MQTT messages) until an MQTT message calls shutdown.
 
     def shutdown(self):
