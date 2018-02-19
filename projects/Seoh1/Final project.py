@@ -18,7 +18,7 @@ from datetime import datetime
 import threading
 from threading import Timer
 import time
-import robot_controller as robo
+import rc_susie as robo
 import tkinter
 from tkinter import ttk
 import mqtt_remote_method_calls as com
@@ -49,8 +49,9 @@ def manual_command_screen():
 
 
     left_speed_label = ttk.Label(main_frame, text="Left")
-    left_speed_label.grid(row=1, column=0)
-    left_speed_entry = ttk.Entry(main_frame, width=8)
+    left_speed_label.grid(row=1, column=1)
+    left_speed_entry = ttk.Entry(main_frame, width=8, justify=tkinter.RIGHT)
+    left_speed_entry.insert(0, "600")
     left_speed_entry.grid(row=2, column=0)
 
     right_speed_label = ttk.Label(main_frame, text="Right")
@@ -173,14 +174,9 @@ def handle_shutdown(button_state, dc):
     if button_state:
         dc.running = False
 
-def beacon_pickup():
-    robot = robo.Snatch3r()
-
-    while True:
-        found_beacon = robot.seek_beacon()
-        if found_beacon:
-            ev3.Sound.speak("I got the beacon")
-            robot.arm_up()
+def beacon_pickup(mqtt_client):
+    print("beacon pickup")
+    mqtt_client.send_message("find_beacon")
 
 
 
