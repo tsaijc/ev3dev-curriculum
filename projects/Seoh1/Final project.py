@@ -12,25 +12,27 @@
     The robot will shutdown when the back button is pressed, or the robot will shutdow
     """
 
-import ev3dev.ev3 as ev3
+
 import datetime
 from datetime import datetime
 import threading
 from threading import Timer
 import time
 import rc_susie as robo
+import os
 import tkinter
 from tkinter import ttk
 import mqtt_remote_method_calls as com
 import traceback
-"""x = datetime.today()
-y = x.replace(day=x.day, hour=17, minute=1, second=0, microsecond=0)
+x = datetime.today()
+y = x.replace(day=x.day, hour=1, minute=41, second=0, microsecond=0)
 delta_t = y-x
 
-secs = delta_t.seconds+1"""
+secs = delta_t.seconds+1
 
 def main():
 
+    os.system("start https://www.youtube.com/watch?v=3pR-8cM-aVs")
     manual_command_screen()
 
 
@@ -109,13 +111,6 @@ def manual_command_screen():
     e_button.grid(row=6, column=2)
     e_button['command'] = (lambda: quit_program(mqtt_client, True))
 
-    interaction = ttk.Label(main_frame, text="Robot's current position")
-    interaction.grid(row=0, column=5)
-
-    name1 = ttk.Label(main_frame, text="Little Billy")
-    name1.grid(row=1, column=5)
-
-
     shake_hands = ttk.Button(main_frame, text="Search for Deliverable")
     shake_hands.grid(row=3, column=5)
     shake_hands['command'] = lambda: beacon_pickup(mqtt_client)
@@ -179,5 +174,8 @@ def beacon_pickup(mqtt_client):
     mqtt_client.send_message("find_beacon")
 
 
+t = Timer(secs, main)
+t.start()
 
-main()
+
+
