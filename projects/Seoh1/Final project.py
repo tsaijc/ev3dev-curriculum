@@ -6,10 +6,11 @@
 """
 
 """The ideal function of this code:
-    The robot gets activated when certain time point is achieved.
-    The robot first find the beacon, the holds it up.
-    The robot drives to places and when certain color is detected it drops the beacon its holding
-    The robot will shutdown when the back button is pressed, or the robot will shutdow
+    The code on the pc part will activate upon certain scheduled time,
+    Once the code runs, the first thing it does is to upon up a browser at indicated URL, in this project, it's a song on Youtube. 
+    The tkinter dui will pop up when the code is activated to provide human input commands to the robot.
+    The robot will be able to find the deliverable (beacon) when the "search for deliverable" button is pressed on dui
+    The user than can manually deliver the object to wanted destination.
     """
 
 import ev3dev.ev3 as ev3
@@ -25,8 +26,9 @@ from tkinter import ttk
 import mqtt_remote_method_calls as com
 import traceback
 
+#The time schedule modifier
 x=datetime.today()
-y = x.replace(day=x.day, hour=2, minute=32, second=0, microsecond=0)
+y = x.replace(day=x.day, hour=0, minute=17, second=10, microsecond=0)
 delta_t = y-x
 
 secs = delta_t.seconds+1
@@ -34,11 +36,12 @@ secs = delta_t.seconds+1
 
 def main():
 
-    os.system("start https://www.youtube.com/watch?v=3pR-8cM-aVs")
+    os.system("start https://www.youtube.com/watch?v=3pR-8cM-aVs") #The website indicated to start when the code starts
     manual_command_screen()
 
 
 def manual_command_screen():
+    #Manual delivery system tkinter dui
     mqtt_client = com.MqttClient()
     mqtt_client.connect_to_ev3()
 
@@ -53,7 +56,7 @@ def manual_command_screen():
 
 
     left_speed_label = ttk.Label(main_frame, text="Left")
-    left_speed_label.grid(row=1, column=1)
+    left_speed_label.grid(row=1, column=0)
     left_speed_entry = ttk.Entry(main_frame, width=8, justify=tkinter.RIGHT)
     left_speed_entry.insert(0, "600")
     left_speed_entry.grid(row=2, column=0)
