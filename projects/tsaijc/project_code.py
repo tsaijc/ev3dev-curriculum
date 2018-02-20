@@ -4,8 +4,6 @@
 """
 
 import ev3dev.ev3 as ev3
-import time
-import robot_controller as robo
 import tkinter
 from tkinter import ttk
 import mqtt_remote_method_calls as com
@@ -40,13 +38,13 @@ def control_ev3_movements():
 
     left_speed_label = ttk.Label(main_frame, text="Left Speed")
     left_speed_label.grid(row=0, column=0)
-    left_speed_entry = ttk.LabeledScale(main_frame, from_=0, to=600)
+    left_speed_entry = tkinter.Scale(main_frame, from_=0, to=600, tickinterval=200)
     # left_speed_entry.insert(0, "600")
     left_speed_entry.grid(row=1, column=0)
 
     right_speed_label = ttk.Label(main_frame, text="Right Speed")
     right_speed_label.grid(row=0, column=2)
-    right_speed_entry = ttk.LabeledScale(main_frame, from_=0, to=600)
+    right_speed_entry = tkinter.Scale(main_frame, from_=0, to=600, tickinterval=200)
     # right_speed_entry.insert(0, "600")
     right_speed_entry.grid(row=1, column=2)
 
