@@ -18,20 +18,24 @@ from datetime import datetime
 import threading
 from threading import Timer
 import time
-import robot_controller as robo
+import rc_susie as robo
+import os
 import tkinter
 from tkinter import ttk
 import mqtt_remote_method_calls as com
 import traceback
-x = datetime.today()
-y = x.replace(day=x.day, hour=17, minute=1, second=0, microsecond=0)
+
+x=datetime.today()
+y = x.replace(day=x.day, hour=2, minute=32, second=0, microsecond=0)
 delta_t = y-x
 
 secs = delta_t.seconds+1
 
+
 def main():
+
+    os.system("start https://www.youtube.com/watch?v=3pR-8cM-aVs")
     manual_command_screen()
-    beacon_pickup()
 
 
 def manual_command_screen():
@@ -49,8 +53,9 @@ def manual_command_screen():
 
 
     left_speed_label = ttk.Label(main_frame, text="Left")
-    left_speed_label.grid(row=1, column=0)
-    left_speed_entry = ttk.Entry(main_frame, width=8)
+    left_speed_label.grid(row=1, column=1)
+    left_speed_entry = ttk.Entry(main_frame, width=8, justify=tkinter.RIGHT)
+    left_speed_entry.insert(0, "600")
     left_speed_entry.grid(row=2, column=0)
 
     right_speed_label = ttk.Label(main_frame, text="Right")
@@ -108,17 +113,10 @@ def manual_command_screen():
     e_button.grid(row=6, column=2)
     e_button['command'] = (lambda: quit_program(mqtt_client, True))
 
-    interaction = ttk.Label(main_frame, text="Robot's current position")
-    interaction.grid(row=0, column=5)
-
-    name1 = ttk.Label(main_frame, text="Little Billy")
-    name1.grid(row=1, column=5)
-
-
     shake_hands = ttk.Button(main_frame, text="Search for Deliverable")
     shake_hands.grid(row=3, column=5)
-    shake_hands['command'] = lambda: beacon_pickup(mqtt_client)
-    root.bind('<s>', lambda event: beacon_pickup(mqtt_client))
+    shake_hands['command'] = lambda: beacon_searching(mqtt_client)
+    root.bind('<s>', lambda event: beacon_searching(mqtt_client))
 
 
     root.mainloop()
@@ -173,22 +171,13 @@ def handle_shutdown(button_state, dc):
     if button_state:
         dc.running = False
 
-def beacon_pickup():
-    robot = robo.Snatch3r()
-    try:
-        while True:
-            found_beacon = robot.seek_beacon()
-            if found_beacon:
-                ev3.Sound.speak("I got the beacon")
-                robot.arm_up()
-                time.sleep(1)
-                robot.arm_down()
-            command = input("Hit enter to seek the beacon again or enter q to quit: ")
-            if command == "q":
-                break
-    except:
-        traceback.print_exc()
-        ev3.Sound.speak("Error")
+def beacon_searching(mqtt_client):
+    print("find beacon")
+    mqtt_client.send_message("seek_beacon")
+
 
 t = Timer(secs, main)
 t.start()
+
+
+

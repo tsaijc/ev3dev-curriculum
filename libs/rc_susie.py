@@ -1,3 +1,4 @@
+
 """
   Library of EV3 robot functions that are useful in many different applications. For example things
   like arm_up, arm_down, driving around, or doing things with the Pixy camera.
@@ -25,12 +26,11 @@ class Snatch3r(object):
         self.right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
         self.arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
         self.touch_sensor = ev3.TouchSensor()
-        self.running = True
+        self.running = 0
         self.ir_sensor = ev3.InfraredSensor()
         self.color_sensor = ev3.ColorSensor()
         self.pixy = ev3.Sensor(driver_name="pixy-lego")
         self.beacon_seeker = ev3.BeaconSeeker(channel=1)
-        self.btn = ev3.Button()
 
         # Check that the motors are actually connected
         assert self.left_motor.connected
@@ -109,7 +109,6 @@ class Snatch3r(object):
         """run the robot forever until shutdown is performed"""
         self.running = True
         while self.running:
-            self.btn.process()
             time.sleep(0.1)  # Do nothing (except receive MQTT messages) until an MQTT message calls shutdown.
 
     def shutdown(self):
@@ -117,90 +116,8 @@ class Snatch3r(object):
         # The most important part of this method is given here, but you should add a bit more to stop motors, etc.
         self.running = False
 
-    def seek_beacon(self):
-        """
-        Uses the IR Sensor in BeaconSeeker mode to find the beacon.  If the beacon is found this return True.
-        If the beacon is not found and the attempt is cancelled by hitting the touch sensor, return False.
-        """
-        self.beacon_seeker = ev3.BeaconSeeker(channel=1)
-
-        forward_speed = 300
-        turn_speed = 100
-        while not self.touch_sensor.is_pressed:
-            current_heading = self.beacon_seeker.heading  # use the beacon_seeker heading
-            current_distance = self.beacon_seeker.distance  # use the beacon_seeker distance
-            if current_distance == -128:
-                # If the IR Remote is not found just sit idle for this program until it is moved.
-                print("IR Remote not found. Distance is -128")
-                self.stop()
-            else:
-                if math.fabs(current_heading) < 2:
-                    # Close enough of a heading to move forward
-                    print("On the right heading. Distance: ", current_distance)
-                    # You add more!
-                    if current_distance > 1:
-                        self.drive(forward_speed, forward_speed)
-                    else:
-                        self.stop()
-                        self.drive_inches(3, 100)
-                        return True
-
-                if 2 < math.fabs(current_heading) < 10:
-                    print("Adjusting Heading: ", current_heading)
-                    if current_heading > 0:
-                        self.drive(turn_speed, -turn_speed)
-                    if current_heading < 0:
-                        self.drive(-turn_speed, turn_speed)
-
-                if math.fabs(current_heading) > 10:
-                    print("Heading is too far off to fix: ", current_heading)
-                    self.stop()
-
-            time.sleep(0.2)
-
-        # The touch_sensor was pressed to abort the attempt if this code runs.
-        print("Abandon ship!")
-        self.stop()
-        return False
-
-    def find_toy(self):
-        turn_speed = 200
-        while True:
-            self.beacon_seeker = ev3.BeaconSeeker(channel=1)
-            current_heading = self.beacon_seeker.heading  # use the beacon_seeker heading
-            current_distance = self.beacon_seeker.distance  # use the beacon_seeker distance
-            if current_distance == -128:
-                # If the IR Remote is not found just sit idle for this program until it is moved.
-                print("Can't find toy")
-                self.stop()
-            else:
-                if math.fabs(current_heading) < 2:
-
-                    print("On the right heading. Distance: ", current_distance)
-                    # You add more!
-                    self.stop()
-                    self.read_colors()
-                    print("Read the color")
-                    return
-
-                if 2 < math.fabs(current_heading) < 50:
-                    print("Adjusting Heading: ", current_heading)
-                    if current_heading > 0:
-                        self.drive(turn_speed, -turn_speed)
-                    if current_heading < 0:
-                        self.drive(-turn_speed, turn_speed)
-
-                if math.fabs(current_heading) > 50:
-                    print("Heading is too far off to fix: ", current_heading)
-                    self.stop()
-
-            time.sleep(0.2)
-
-        self.stop()
-        return False
-
     def read_colors(self):
-        colors = ["red box", "blue bag"]
+        colors = ["yellow", "blue"]
         mode = ["SIG1", "SIG2"]
         color_num = 2
         n = 0
@@ -212,27 +129,12 @@ class Snatch3r(object):
             print("(X, Y)=({}, {}) Width={} Height={}".format(
                 self.pixy.value(1), self.pixy.value(2), self.pixy.value(3),
                 self.pixy.value(4)))
-            if self.pixy.value(1) > 150 and self.pixy.value(3) > 20:
-                ev3.Sound.speak("It's on the "+colors[n]).wait()
+            if self.pixy.value(1) > 150 and self.pixy.value(3) > 10:
+                ev3.Sound.speak("It's in the "+colors[n]+" box").wait()
                 return
             time.sleep(0.1)
             n += 1
 
-    def shake_hands(self):
-        while True:
-            print(self.ir_sensor.proximity)
-            if self.ir_sensor.proximity < 10:
-                print("shake hands")
-                self.arm_motor.run_to_abs_pos(position_sp=2200)
-                self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
-                self.arm_motor.run_to_abs_pos(position_sp=1200)
-                self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
-                self.arm_motor.run_to_abs_pos(position_sp=2200)
-                self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
-                self.arm_motor.run_to_abs_pos(position_sp=0)
-                self.arm_motor.wait_while(ev3.Motor.STATE_RUNNING)
-                ev3.Sound.speak("Nice to meet you").wait()
-                return
 
     def drive_to_color(self):
             ev3.Sound.speak("Move Through Maze and Stop At Red").wait()
@@ -245,41 +147,46 @@ class Snatch3r(object):
                     break
             ev3.Sound.speak("Found Red").wait()
 
-    def find_prize(self):
-        beacon_seeker = ev3.BeaconSeeker(channel=1)
+    def seek_beacon(self):
         forward_speed = 300
         turn_speed = 100
+        beacon_seeker = ev3.BeaconSeeker(channel=1)
+
         while not self.touch_sensor.is_pressed:
-            current_heading = beacon_seeker.heading  # use the beacon_seeker heading
-            current_distance = beacon_seeker.distance  # use the beacon_seeker distance
+            current_heading = beacon_seeker.heading
+            current_distance = beacon_seeker.distance
             if current_distance == -128:
                 print("IR Remote not found. Distance is -128")
-                self.stop()
+                self.drive(turn_speed, -turn_speed)
             else:
+
                 if math.fabs(current_heading) < 2:
+                    if current_distance == 1:
+                        self.drive_inches(3, forward_speed)
+                        self.stop()
+                        print("Found the beacon!")
+                        ev3.Sound.speak("I found the beacon")
+                        return True
                     print("On the right heading. Distance: ", current_distance)
                     if current_distance > 1:
                         self.drive(forward_speed, forward_speed)
-                    else:
-                        self.stop()
-                        return True
+                        time.sleep(0.1)
                 if 2 < math.fabs(current_heading) < 10:
-                    print("Adjusting Heading: ", current_heading)
-                    if current_heading > 0:
-                        self.drive(turn_speed, -turn_speed)
                     if current_heading < 0:
                         self.drive(-turn_speed, turn_speed)
+                        time.sleep(0.1)
+                    if current_heading > 0:
+                        self.drive(turn_speed, -turn_speed)
+                        time.sleep(0.1)
+                    print("Adjusting heading: ", current_heading)
+
                 if math.fabs(current_heading) > 10:
+                    self.drive(-forward_speed, forward_speed)
+                    time.sleep(0.1)
                     print("Heading is too far off to fix: ", current_heading)
-                    self.stop()
+
             time.sleep(0.2)
+        print("Abandon ship!")
         self.stop()
-        ev3.Sound.speak("Found Prize").wait()
         return False
 
-    def pick_up_prize(self):
-        ev3.Sound.speak("Picking Up Prize").wait()
-        self.drive_inches(3,100)
-        ev3.Sound.speak("Prize Retrieved")
-        self.arm_up()
-        time.sleep(1)
